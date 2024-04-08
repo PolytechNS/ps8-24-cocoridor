@@ -390,9 +390,11 @@ io.of("/api/friendChat").on('connection', async (socket) => {
     socket.on('join', async (nameUser, friendName) => {
         socket.join(nameUser + friendName);
         socket.join(friendName + nameUser);
+        socket.emit('updateMessage');
     });
     socket.on('newMessage', async (nameUser, friendName) => {
         io.of("/api/friendChat").to(nameUser + friendName).emit('updateMessage');
+        io.of("/api/friendChat").to(friendName + nameUser).emit('updateMessage');
     });
 });
 

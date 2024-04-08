@@ -41,10 +41,8 @@ document.addEventListener("DOMContentLoaded", async function () {
           });
       textContent.value = "";
       socket.emit('newMessage', nameUser, friendName);
-
     }
   });
-  await updateConv(nameUser, friendName);
 
 });
 
