@@ -12,7 +12,6 @@ async function manageRequest(request, response) {
     case "print":
       user = await db.getUsers();
       result = await user.find().toArray();
-      console.log(result);
       break;
     case "printConv":
       user = await db.getUsers();
@@ -153,7 +152,6 @@ async function getInfo(request, response) {
     }
 
     let user = await db.getUser(body.username);
-    console.log(user)
     let nbMessage=0;
     if (!user) {
       response.writeHead(404, { "Content-Type": "application/json" });
@@ -187,6 +185,14 @@ async function updateElo(username, elo) {
     user.stats.elo = elo;
     await db.updateUser(user);
     return user.stats.elo;
+}
+
+async function updateUserStats(username, stats){
+    let user = await db.getUser(username);
+    user.stats = stats;
+    await db.updateUser(user);
+    return user.stats;
+
 }
 
 
@@ -528,7 +534,6 @@ async function changeSkin(request,response){
     return;
   }
   parsejson(request).then(async (body) => {
-    console.log(body)
     if (!body.name || !body.beastSkin || !body.humanSkin) {
       response.writeHead(400, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ error: 'Données manquantes' }));
@@ -554,23 +559,23 @@ async function getUser(userId=null){
  * @returns {Promise<Boolean>}
  */
 async function addAchievement(userId,achievement){
-    if(Achievements[achievement]==null) return false;
+    if(Achievements[achievement.key]==null) return false;
     let user = await db.getUser(userId)
     if(!user) return false;
-    if(user.achievements.includes(achievement)) return false;
+    for(achieved of user.achievements)if(achieved.key == achievement.key) return false;
     user.achievements.push(achievement);
     db.updateUser(user);
     return true;
 }
 
 async function deleteGameSave(saveId){
-    let game = await db.getGame(saveId)
+    let game =( await db.getGame(saveId)).gameState
     if(game==null)return;
     for(let player of game.gameParams.playerList){
         let user = await getUser(player.username)
         if(user==null) continue;
         delete user.savedGames[saveId]
-        updateUser(user);
+        db.updateUser(user);
     }
 
     
