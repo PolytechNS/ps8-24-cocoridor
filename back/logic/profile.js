@@ -176,7 +176,9 @@ const ImageRef = {
     Poulet : "/assets/img/PouletJ1.png",
     Fermier2 : "/assets/img/Fermier2.webp",
     Poulet2 : "/assets/img/Poulet2.png",
-    MatchMakingGif : "/assets/img/polos.gif"
+    MatchMakingGif : "/assets/img/polos.gif",
+    Colonel : "/assets/img/colonel.png",
+    ChickenNugget : "/assets/img/chickenNuggets.png",
 }
 const Achievements = {
     // Friends
@@ -189,13 +191,13 @@ const Achievements = {
     SendMessage : {key:"SendMessage",value:"Envoyer un message a un amis"},
 
     // General Games
-    OneGame : {key:"OneGame",value:"Faire votre premiere partie"},
+    OneGame : {key:"OneGame",value:"Faire votre premiere partie",reward:[null,ImageRef.Colonel]},
     TenGames : {key:"TenGames",value:"Faire 10 parties"},
     FiftyGames : {key:"FiftyGames",value:"Faire 50 parties"},
     TwoHundredFiftyGames : {key:"TwoHundredFiftyGames",value:"Faire 250 parties"},
     OneThousandGames : {key:"OneThousandGames",value:"Faire 1000 parties"},
 
-    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie"},
+    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie",reward:[ImageRef.ChickenNugget,null]},
     TenVictory : {key:"TenVictory",value:"gagner 10 parties"},
     FiftyVictory : {key:"FiftyVictory",value:"gagner 50 parties"},
     TwoHundredFiftyVictory : {key:"TwoHundredFiftyVictory",value:"gagner 250 parties"},

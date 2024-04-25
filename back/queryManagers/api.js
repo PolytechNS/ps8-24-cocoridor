@@ -568,6 +568,10 @@ async function addAchievement(userId,achievement){
     let user = await db.getUser(userId)
     if(!user) return false;
     for(achieved of user.achievements)if(achieved.key == achievement.key) return false;
+    if(achievement.reward){
+      if(achievement.reward[0]!=null)user.skins.beastSkins.push(achievement.reward[0]);
+      if(achievement.reward[1]!=null)user.skins.humanSkins.push(achievement.reward[1]);
+    }
     user.achievements.push(achievement);
     db.updateUser(user);
     return true;
