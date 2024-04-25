@@ -201,7 +201,11 @@ io.of("/api/AIgame").on('connection', (socket) => {
             socket.emit("updateBoard", newBoard,turnNb,nbWalls);
             let winners = back.GameWinner(gameId);
             if (winners != null && winners.length!=0) {
-                socket.emit("endGame", winners);
+                let winnersId = []
+                for(let winner of winners){
+                    winnersId.push(winner.getid());
+                }
+                socket.emit("endGame", winnersId);
                 endGameUpdate(GameType.AgainstAI,saveId,gameId,playerList,winners)
             }
                 let aiBoard = back.BoardFor(gameId, bot);
@@ -232,8 +236,12 @@ io.of("/api/AIgame").on('connection', (socket) => {
         }
         let winners = back.GameWinner(gameId);
         if (winners != null && winners.length!=0) {
+            let winnersId = []
+            for(let winner of winners){
+                winnersId.push(winner.getid());
+            }
             endGameUpdate(GameType.AgainstAI,saveId,gameId,playerList,winners)
-            socket.emit("endGame", winners);
+            socket.emit("endGame", winnersId);
 
         }
 
@@ -258,7 +266,11 @@ io.of("/api/AIgame").on('connection', (socket) => {
             let winners = back.GameWinner(gameId);
             if (winners != null && winners.length!=0) {
                 endGameUpdate(GameType.AgainstAI,saveId,gameId,playerList,winners)
-                socket.emit("endGame", winners);
+                let winnersId = []
+                for(let winner of winners){
+                    winnersId.push(winner.getid());
+                }
+                socket.emit("endGame", winnersId);
             }
             let aiBoard = back.BoardFor(gameId,bot);
 
@@ -287,9 +299,13 @@ io.of("/api/AIgame").on('connection', (socket) => {
         }
 
         let winners = back.GameWinner(gameId);
-        if (winners != null) {
+        if (winners != null && winners.length!=0) {
             endGameUpdate(GameType.AgainstAI,saveId,gameId,playerList,winners)
-            socket.emit("endGame", winners);
+            let winnersId = []
+            for(let winner of winners){
+                winnersId.push(winner.getid());
+            }
+            socket.emit("endGame", winnersId);
         }
     });
     socket.on("gameSetup",(move)=>{
@@ -347,9 +363,13 @@ io.of("/api/Localgame").on('connection', (socket) => {
             socket.emit("updateBoard",newBoard,back.getTurnNb(gameId),back.getNbWalls(playerList));
         }
         let winners = back.GameWinner(gameId);
-        if(winners !=null){
+        if(winners !=null && winners.length!=0){
             endGameUpdate(GameType.Local,null,gameId,playerList,winners)
-            socket.emit("endGame", winners);
+            let winnersId = []
+            for(let winner of winners){
+                winnersId.push(winner.getid());
+            }
+            socket.emit("endGame", winnersId);
         }
 
 
@@ -365,9 +385,13 @@ io.of("/api/Localgame").on('connection', (socket) => {
             socket.emit("updateBoard",newBoard,back.getTurnNb(gameId),back.getNbWalls(playerList));
         }
         let winners = back.GameWinner(gameId);
-        if(winners !=null){
+        if(winners !=null && winners.length!=0){
             endGameUpdate(GameType.Local,null,gameId,playerList,winners)
-            socket.emit("endGame", winners);
+            let winnersId = []
+            for(let winner of winners){
+                winnersId.push(winner.getid());
+            }
+            socket.emit("endGame", winnersId);
         }
     });
 
@@ -439,7 +463,7 @@ io.of("/api/1vs1").on('connection', async (socket) => {
             }
             turnNb = back.getTurnNb(gameId);
             gameState = back.getGameState(gameId);
-            saveId = await saveGame(gameState);
+            //saveId = await saveGame(gameState);
             io.of("/api/1vs1").to('room'+gameId).emit("initChoosePos",gameId)
         }
     }
@@ -491,7 +515,7 @@ io.of("/api/1vs1").on('connection', async (socket) => {
             let actionDone = back.execMove(gameId, me, move.x, move.y);
             if (actionDone) {
                 gameState = back.getGameState(gameId);
-                await saveGame(gameState, saveId);
+                //await saveGame(gameState, saveId);
                 io.of("/api/1vs1").to('room' + gameId).emit("moved", gameId);
             }
         }else{
@@ -514,7 +538,7 @@ io.of("/api/1vs1").on('connection', async (socket) => {
             let actionDone = back.execWall(gameId, me, wall.x, wall.y, wall.vertical)
             if (actionDone) {
                 gameState = back.getGameState(gameId);
-                await saveGame(gameState, saveId);
+                //await saveGame(gameState, saveId);
                 io.of("/api/1vs1").to('room' + gameId).emit("moved", gameId);
             }
         }else{
@@ -538,7 +562,11 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         socket.emit("updateBoard", newBoard,turnNb,nbWalls);
         winners = back.GameWinner(gameId);
         if (winners != null && winners.length!=0) {
-            socket.emit("endGame", winners);
+            let winnersId = []
+            for(let winner of winners){
+                winnersId.push(winner.getid());
+            }
+            socket.emit("endGame", winnersId);
         }
     });
     
@@ -599,12 +627,12 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         io.of("/api/1vs1").to('room' + gameId).emit("message", message,playerName);
     });
     socket.on("disconnect",()=>{
-
+        clearInterval(timer);
         if(!connectedPlayers.hasOwnProperty(gameId))return;
         for (let i = 0; i < connectedPlayers[gameId].length; i++) {
             if (connectedPlayers[gameId][i].getid() === myId) {
                 connectedPlayers[gameId].splice(i, 1);
-                i--; 
+                i--;
             }
         }
         connectedPlayers[gameId].filter((e)=>e.getid() != myId )
@@ -629,7 +657,7 @@ const GameType = {
  * @param {String} saveId 
  * @param {String} gameId 
  * @param {profile.PlayerGameInstance[]} playerInstanceList 
- * @param {String[]} winners 
+ * @param {profile.PlayerGameInstance[]} winners
  */
  async function endGameUpdate(gameType,saveId = null,gameId,playerInstanceList,winnersInstance){
 
@@ -643,6 +671,7 @@ const GameType = {
         if(winner.fakePlayer)continue;
         winners.push(await db.getUser(winner))
     }
+    console.log(winners);
     switch(gameType){
         case GameType.Local:
             console.log("Local")
@@ -660,7 +689,8 @@ const GameType = {
             for(let player of playerList){
                 player.stats.AiPlay = player.stats.AiPlay + 1
                 for(let winner of winners){
-                    if(winner.username==player.username){console.log("victory+");player.stats.AiPlayVictory +=1; break;}
+                    if(winner)
+                        if(winner.username==player.username){console.log("victory+");player.stats.AiPlayVictory +=1; break;}
                 }
             }
             break;
@@ -787,7 +817,7 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
             }
             turnNb = back.getTurnNb(gameId);
             gameState = back.getGameState(gameId);
-            saveId = await saveGame(gameState);
+            //saveId = await saveGame(gameState);
             io.of("/api/1vs1Friend").to('room'+gameId).emit("initChoosePos",gameId)
         }
     });
@@ -806,7 +836,7 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
             let actionDone = back.execMove(gameId, me, move.x, move.y);
             if (actionDone) {
                 gameState = back.getGameState(gameId);
-                await saveGame(gameState, saveId);
+                //await saveGame(gameState, saveId);
                 io.of("/api/1vs1Friend").to('room' + gameId).emit("moved", gameId);
             }
         }else{
@@ -829,7 +859,7 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
             let actionDone = back.execWall(gameId, me, wall.x, wall.y, wall.vertical)
             if (actionDone) {
                 gameState = back.getGameState(gameId);
-                await saveGame(gameState, saveId);
+                //await saveGame(gameState, saveId);
                 io.of("/api/1vs1Friend").to('room' + gameId).emit("moved", gameId);
             }
         }else{
@@ -853,7 +883,11 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         socket.emit("updateBoard", newBoard,turnNb,nbWalls);
         winners = back.GameWinner(gameId);
         if (winners != null && winners.length!=0) {
-            socket.emit("endGame", winners);
+            let winnersId = []
+            for(let winner of winners){
+                winnersId.push(winner.getid());
+            }
+            socket.emit("endGame", winnersId);
         }
     });
 
@@ -923,7 +957,10 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         }
         friendMatch[gameId].filter((e)=>e.getid() != myId )
         if(friendMatch[gameId].length==0){
-            endGameUpdate(GameType.AgainstFriend,saveId,gameId,playerList,winners)
+            if (winners != null && winners.length!==0) {
+                console.log(winners);
+                endGameUpdate(GameType.AgainstFriend, saveId, gameId, playerList, winners)
+            }
         }
     })
 });

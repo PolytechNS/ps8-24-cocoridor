@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liste d'amis</title>
   <link rel="stylesheet" href="../FriendList/friendList.css">
+    <link href="header.css" rel="stylesheet">
 </head>
 
 <body>
@@ -141,7 +142,7 @@
               pvpButton.textContent = "Défier";
               pvpButton.onclick = function () {
                 const friendName = pvpButton.getAttribute("id");
-                window.location.href = "../Game-Page/index.html?mode=1vs1Friend&playerid=" + nameUser + "&friend=" + friendName;
+                window.location.href = "../Game-Page?mode=1vs1Friend&playerid=" + nameUser + "&friend=" + friendName;
               };
 
               friendElement.appendChild(nameElement);
