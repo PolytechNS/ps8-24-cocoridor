@@ -142,3 +142,9 @@ a {
 .locked img{
     filter:grayscale(1)
 }
+
+.miniature{
+    vertical-align: middle;
+    max-width: 30px;
+    max-height: 30px;
+}
