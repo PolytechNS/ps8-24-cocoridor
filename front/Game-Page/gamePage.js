@@ -1,5 +1,5 @@
 let small=false;
-if(window.innerWidth <= 600 && window.innerHeight <= 750){
+if(window.innerWidth <= 600){
   small = true;
 }
 
