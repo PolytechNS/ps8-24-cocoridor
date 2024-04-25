@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     function displayAchievement(){
 
                         let skinsToUnlock = []
+                        console.log(selectedAchievement)
                         if(selectedAchievement.reward){
                             if(selectedAchievement.reward[0]!=null)skinsToUnlock.push(selectedAchievement.reward[0])
                             if(selectedAchievement.reward[1]!=null)skinsToUnlock.push(selectedAchievement.reward[1]) 
