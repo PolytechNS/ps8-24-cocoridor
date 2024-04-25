@@ -127,6 +127,7 @@
       let waiting = document.getElementsByClassName("attente");
       var socket;
       let gameSetUp = false;
+      let previousPos = null;
       switch (mode) {
         case "local":
           socket = io("/api/Localgame");
@@ -219,6 +220,33 @@
         socket.on("moved",()=>{
             socket.emit('update');
         })
+      socket.on("placed",(coords)=> {
+          //the div that corresponds to the coords in the game section
+          let pos = (coords.X)+(8-coords.Y)*9;
+          console.log(pos);
+          let game = document.getElementById("game");
+          let tile = game.childNodes[pos].childNodes[0];
+          console.log(tile);
+          let me;
+          for(player of playerList){
+              if(player.username==user){
+                  me = player;
+              }
+          }
+          //ajoute l'image de me sur la case
+          let img = document.createElement("img");
+          img.src = me.playerSkin;
+          img.style.width = "100%";
+          img.style.height = "100%";
+          tile.appendChild(img);
+            if(previousPos){
+                let previousTile = game.childNodes[previousPos].childNodes[0];
+                previousTile.removeChild(previousTile.childNodes[0]);
+            }
+            previousPos = pos;
+
+
+      })
         socket.on("updateBoard",(board,turnNumber,nbWalls)=>{
             turnNb=turnNumber;
             res = nbWalls[0]+"";

@@ -316,13 +316,12 @@ io.of("/api/AIgame").on('connection', (socket) => {
                 continue;
             }
         }
-
-        if(me.OnTile!=null) return;
         let coords = {X:move.x,Y:move.y}
         if(me.start.find((e)=>e.X==coords.X&&e.Y==coords.Y) ==null )return;
         playerList= back.getPlayerList(gameId);
 
         back.placePlayer(gameId,myId,coords);
+        socket.emit("placed", coords);
     
         for(let player of playerList){
             if(player.OnTile==null) return;
@@ -579,13 +578,12 @@ io.of("/api/1vs1").on('connection', async (socket) => {
                 continue;
             }
         }
-        if(me.OnTile!=null) return;
         let coords = {X:move.x,Y:move.y}
         if(me.start.find((e)=>e.X==coords.X&&e.Y==coords.Y) ==null )return;
         playerList= back.getPlayerList(gameId);
 
         back.placePlayer(gameId,myId,coords);
-    
+        socket.emit("placed", coords);
         for(let player of playerList){
             if(player.OnTile==null) return;
         }
@@ -902,12 +900,12 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
                 continue;
             }
         }
-        if(me.OnTile!=null) return;
         let coords = {X:move.x,Y:move.y}
         if(me.start.find((e)=>e.X==coords.X&&e.Y==coords.Y) ==null )return;
         playerList= back.getPlayerList(gameId);
 
         back.placePlayer(gameId,myId,coords);
+        socket.emit("placed", coords);
 
         for(let player of playerList){
             if(player.OnTile==null) return;
