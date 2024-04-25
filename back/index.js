@@ -424,7 +424,7 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         let gamePlayers = [];
         gamePlayers.push({id: myId, socket: socket, elo: myElo});
         for(let player of players) {
-            if(player.getid() !== myId){
+            if(player.id !== myId){
                 if(player.elo >=myElo-(50+QueueTimer*3) && player.elo <= myElo+(50+QueueTimer*3)){
                     console.log(myElo)
                     console.log(player.elo)
@@ -666,10 +666,11 @@ const GameType = {
         if(player.fakePlayer)continue;
         playerList.push(await db.getUser(player.username))
     }
+    console.log(winnersInstance)
     let winners = []
     for(let winner of winnersInstance) {
         if(winner.fakePlayer)continue;
-        winners.push(await db.getUser(winner))
+        winners.push(await db.getUser(winner.username))
     }
     console.log(winners);
     switch(gameType){
@@ -959,7 +960,6 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         friendMatch[gameId].filter((e)=>e.getid() != myId )
         if(friendMatch[gameId].length==0){
             if (winners != null && winners.length!==0) {
-                console.log(winners);
                 endGameUpdate(GameType.AgainstFriend, saveId, gameId, playerList, winners)
             }
         }
