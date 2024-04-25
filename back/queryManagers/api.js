@@ -573,6 +573,7 @@ async function addAchievement(userId,achievement){
       if(achievement.reward[1]!=null)user.skins.humanSkins.push(achievement.reward[1]);
     }
     user.achievements.push(achievement);
+    console.log("new User:",user)
     db.updateUser(user);
     return true;
 }
