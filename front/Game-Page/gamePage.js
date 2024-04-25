@@ -1,5 +1,5 @@
 let small=false;
-if(window.innerWidth <= 600 && window.innerHeight <= 750){
+if(window.innerWidth <= 850){
   small = true;
 }
 
@@ -373,7 +373,7 @@ function DisplayBoard(board,positions=null){
   if(mode === "local") {
     let gC = document.getElementById("gameCover");
     if(small){
-      gC.style.cssText = "display : inline-block; font-size: 30px;  text-align: center; margin:auto ;top:95% ; height:100%; width:100%;padding-top: 40% ;";
+      gC.style.cssText = "display : inline-block; font-size: 30px;  text-align: center; margin:auto ;top:98% ; height:70%; width:100%;padding-top: 40% ;";
     }else{
       gC.style.cssText = "display : block; font-size: 50px;  text-align: center; margin:auto; padding-top: 200px;padding-bottom: 400px;";
     }
