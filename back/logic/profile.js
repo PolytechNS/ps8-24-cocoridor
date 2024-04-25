@@ -194,12 +194,6 @@ const Achievements = {
     FiftyGames : {key:"FiftyGames",value:"Faire 50 parties"},
     TwoHundredFiftyGames : {key:"TwoHundredFiftyGames",value:"Faire 250 parties"},
     OneThousandGames : {key:"OneThousandGames",value:"Faire 1000 parties"},
-
-    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie"},
-    TenVictory : {key:"TenVictory",value:"gagner 10 parties"},
-    FiftyVictory : {key:"FiftyVictory",value:"gagner 50 parties"},
-    TwoHundredFiftyVictory : {key:"TwoHundredFiftyVictory",value:"gagner 250 parties"},
-    OneThousandVictory : {key:"OneThousandVictory",value:"gagner 1000 parties"},
     
 
     // Ai Play
@@ -207,21 +201,15 @@ const Achievements = {
     AiGameFive : {key:"AiGameFive",value:"Jouer 5 parties contre une IA"},
     AiGameTwentyFive : {key:"AiGameTwentyFive",value:"Jouer 25 parties contre une IA"},
 
-    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA"},
-
     // Friend Play
     FriendGamePlayed : {key:"FriendGamePlayed",value:"Jouer une partie contre un amis"},
     FriendGameFive : {key:"FriendGameFive",value:"Jouer 5 partie contre un amis"},
     FriendGameTwentyFive : {key:"FriendGameTwentyFive",value:"Jouer 25 partie contre un amis"},
-    
-    WinFriendGame : {key:"WinFriendGame",value:"Gagner une partie contre un amis"},
 
     // Online Play
     OnlineGamePlayed : {key:"OnlineGamePlayed",value:"Jouer une partie classé"},
     OnlineGameTen : {key:"OnlineGameTen",value:"Jouer 10 parties classé"},
     OnlineGameHundred : {key:"OnlineGameHundred",value:"Jouer 100 parties classé"},
-    
-    WinOnlineGame : {key:"WinOnlineGame",value:"Gagner une partie en ligne"},
 
     // ELO
     EloOneTOneH: {key:"EloOneTOneH",value:"Atteindre 1100 de Elo"},
@@ -260,13 +248,13 @@ async function checkStatsAchievement(user){
         if(totalGame>= 50)await user.addAchievements(Achievements.FiftyGames);
         if(totalGame>= 10)await user.addAchievements(Achievements.TenGames);
         if(totalGame>= 1)await user.addAchievements(Achievements.OneGame);
-        
-        if(totalVictory>= 1000)await user.addAchievements(Achievements.OneThousandVictory);
-        if(totalVictory>= 250)await user.addAchievements(Achievements.TwoHundredFiftyVictory);
-        if(totalVictory>= 50)await user.addAchievements(Achievements.FiftyVictory);
-        if(totalVictory>= 10)await user.addAchievements(Achievements.TenVictory);
-        if(totalVictory>= 1)await user.addAchievements(Achievements.OneVictory);
-        
+        /*
+        if(totalVictory>= 1000)await user.addAchievements(Achievements.OneThousandGames);
+        if(totalVictory>= 250)await user.addAchievements(Achievements.TwoHundredFiftyGames);
+        if(totalVictory>= 50)await user.addAchievements(Achievements.FiftyGames);
+        if(totalVictory>= 10)await user.addAchievements(Achievements.TenGames);
+        if(totalVictory>= 1)await user.addAchievements(Achievements.OneGame);
+        */
     }
     if(user.stats.elo>= 1500) await user.addAchievements(Achievements.EloOneTFiveH);
     if(user.stats.elo>= 1400) await user.addAchievements(Achievements.EloOneTFourH);

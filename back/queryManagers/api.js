@@ -158,19 +158,16 @@ async function getInfo(request, response) {
       response.end(JSON.stringify({ error: "Utilisateur non trouvé" }));
       return;
     }
-    delete user.email
-    delete user.password
-    delete user.savedGames
     if(user.convs==undefined){
         response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(JSON.stringify(user));
+        response.end(JSON.stringify({ elo: user.stats.elo , nbMessage: 0, name: user.username, email: user.email,beastSkins:user.skins.beastSkins,humanSkins:user.skins.humanSkins}));
         return;
     }
     for(const conv of user.convs.new){
       nbMessage += conv.messages.length;
     }
     response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify(user));
+    response.end(JSON.stringify({ elo: user.stats.elo , nbMessage: nbMessage, name: user.username, email: user.email,beastSkins:user.skins.beastSkins,humanSkins:user.skins.humanSkins}));
   });
 
 }

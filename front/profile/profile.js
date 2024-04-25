@@ -1,9 +1,13 @@
-import { Achievements } from "../assets/script/Achievements.js";
-
+let cptBeast=0;
+let cptFarm=0;
 document.addEventListener('DOMContentLoaded', async function() {
+    let name;
     const imgBeast= document.getElementById('imgBeast');
     const imgFarm= document.getElementById('imgFarm');   
-    console.log(Achievements.AiGameFive)
+    let cptBeast=0;
+    let cptFarm=0;
+    let beastSkins;
+    let humanSkins;
 
     const usernameCookie = document.cookie.split('; ').find(row => row.startsWith('nomCookie='));
     if (!usernameCookie) {
@@ -13,8 +17,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     const nameUser = usernameCookie.split('=')[1];
     const hostname = window.location.hostname;
-    const api = "http://" + hostname + ":8000/api/getInfo";
-    const user = await fetch(api, {
+        let api = "http://" + hostname + ":8000/api/getInfo";
+        fetch(api, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,34 +26,33 @@ document.addEventListener('DOMContentLoaded', async function() {
             body: JSON.stringify({username: nameUser})
         })
             .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                playerRank = data.elo;
+                if(playerRank == undefined || playerRank == '') {
+                    playerRank = 1000;
+                }
+                console.log(data)
+                document.getElementById('playerRank').textContent = 'Elo ' + playerRank;
+                document.getElementById('name').textContent =data.name;
+                name=data.name;
+                document.getElementById('email').textContent=data.email;
+                beastSkins = data.beastSkins;
+                humanSkins = data.humanSkins;
+                imgBeast.setAttribute('src', beastSkins[cptBeast]);
+                imgFarm.setAttribute('src', humanSkins[cptFarm]);
+
+            })
             .catch(error => {
                 console.error('Error:', error);
             });
-    const name = user.username;
-    const elo = user.stats.elo
-    const beastSkins = user.skins.beastSkins;
-    const humanSkins = user.skins.humanSkins;
-
-    let cptBeast=beastSkins.indexOf(user.skins.beastSkin);
-    let cptFarm=humanSkins.indexOf(user.skins.humanSkin);
-
-    imgBeast.setAttribute('src', ".."+beastSkins[cptBeast]);
-    imgFarm.setAttribute('src', ".."+humanSkins[cptFarm]);
-
-    document.getElementById('playerRank').textContent = 'Elo ' + elo;
-    document.getElementById('name').textContent =name;
-        
     
     const BleftArrow=document.getElementById('arrowLBeast');    
     const BRightArrow=document.getElementById('arrowRBeast');
     
     const FleftArrow=document.getElementById('arrowLFarm');    
     const FRightArrow=document.getElementById('arrowRFarm');
-
-    if(cptBeast==0) BleftArrow.style.visibility="hidden"
-    else if(cptBeast==beastSkins.length-1) BRightArrow.style.visibility="hidden"
-    if(cptFarm==0) FleftArrow.style.visibility="hidden"
-    else if(cptFarm==humanSkins.length-1) FRightArrow.style.visibility="hidden"
 
     BleftArrow.addEventListener('click', async function() {
        cptBeast=changeImg(cptBeast,beastSkins,imgBeast,BleftArrow,BRightArrow,true)
@@ -96,71 +99,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
     });
-    console.log("Achievement Part")
-    {   
-        let achievementsKeys = Object.keys(Achievements)
-        let userKeys = []
-        for(let value of user.achievements) userKeys.push(value.key)
-        let achievementGrid = document.getElementById("achievementGrid")
-        if(achievementGrid==null)console.error("Grid Not Found")
-        else {
-            let maxNbRow = 10
-            let maxNbCol = 10
-            let title = document.getElementById("achievementTitle")
-            let description = document.getElementById("achievementDescription")
-            let reward = document.getElementById("achievementReward")
-            for(let i=0;i<maxNbCol;i++){
-                let line = document.createElement("div");
-                line.style.display="flex"
-                line.style.height=(100/maxNbCol)+"%"
-                for(let j=0;j<maxNbRow;j++){
-                    const selectedAchievement = Achievements[achievementsKeys[(i*maxNbCol)+j]]
-                    let row = document.createElement("div");
-                    row.classList.add("achievementGrid")
-                    row.style.width=(100/maxNbRow)+"%"
-                    for(let current of userKeys){
-                        if(current == selectedAchievement.key) {row.style.opacity=0;break;}
-                        else row.style.backgroundColor="white"
-                    }
 
-                    function displayAchievement(){
-                        console.log("displayAchievement: ",selectedAchievement)
-                        
-                        for(let current of userKeys){
-                            if(current == selectedAchievement.key) {document.getElementById("achievementDisplay").classList.remove("locked"); break;}
-                            else document.getElementById("achievementDisplay").classList.add("locked")
-                        }
-                        title.textContent="Title: "+selectedAchievement.key
-                        description.textContent="description: "+selectedAchievement.value
-                        reward.textContent="reward: "+i+","+j
-                    }
-                    row.addEventListener("mouseenter",displayAchievement)
-                    row.addEventListener("mousedown",displayAchievement)
-                    line.appendChild(row);
-                }
-                achievementGrid.appendChild(line)
-                
-            }
-        }
-    }
 });
 
 function changeImg(cpt,skins,img,arrow,arrow2,type){
+    console.log(cpt)
     if(type){
         cpt--;
         if(cpt==0){
-            arrow.style.visibility='hidden';
+            arrow.style.display='none';
         }
     }else{
         cpt++;
         if(cpt==skins.length-1){
-            arrow.style.visibility='hidden';
+            arrow.style.display='none';
         }
     }
 
     img.setAttribute('src',skins[cpt]);
-    if(arrow2.style.visibility=='hidden'){
-        arrow2.style.visibility='';
+    if(arrow2.style.display=='' || arrow2.style.display=='none'){
+        arrow2.style.display='block';
     }
 
     return cpt
