@@ -411,7 +411,7 @@ const createChatLi = (message, className) => {
   </span><p></p>` : 
   `<span s="material-symbols-outlined">
       <img
-          src="../Game-Page/img/PouletJ1.png"
+          src="../assets/img/PouletJ1.png"
           alt="PouletJ1"
           width="100%"
           height="100%"
