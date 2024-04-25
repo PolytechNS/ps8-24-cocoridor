@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.cordova.cocoridor" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Cocoridor</name>
+    <description>Sample Apache Cordova App</description>
+    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
+        Apache Cordova Team
+    </author>
+    <icon src="www/img/logo.png" android-window-background="#fcba66" />
+    <preference name="android-window-background" value="#fcba66" />
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="usesCleartextTraffic" value="true" />
+    <preference name="hostname" value="15.188.20.133:8000"/>
+    <access origin="http://15.188.20.133:8000/"/>
+    <allow-navigation href="http://15.188.20.133:8000/index.html"/>
+    <preference name="scheme" value="http"/>
+    <!-- vibrations -->
+    <preference name="cordova-plugin-vibration" value="true" />
+    <preference name="android-permission" value="android.permission.VIBRATE" />
+
+    <!-- ndroid.permission.VIBRATE -->
+    <preference name="android-permission" value="true" />
+    <!-- network -->
+    <preference name="cordova-plugin-network-information" value="true" />
+    <plugin name="cordova-plugin-vibration" source="npm" />
+    <plugin name="cordova-plugin-network-information" source="npm" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/logo.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#fcba66" />
+    <preference name="AndroidWindowSplashScreenAnimationDuration" value="3000"/>
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="android.permission.SYSTEM_ALERT_WINDOW" value="true" />
+
+   
+
+
+</widget>
