@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste d'amis</title>
+  <link rel="stylesheet" href="../FriendList/friendList.css">
+    <link href="../header.css" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <div class="upperBtns">
+        <a href="../signUp">
+            <button id=signUp>
+                S'inscrire
+            </button>
+        </a>
+        <a href="../signIn">
+            <button id=signIn>
+                Se connecter
+            </button>
+        </a>
+    </div>
+
+    <a href="..">
+        <h1>CocoRidor</h1>
+    </a>
+
+
+    <div id=playerCard>
+        <a href="../profile">
+            <div id=playerProfile>
+                <img src="../assets/img/logo.png" id="playerPicture" alt="Photo de profil">
+                <div id=playerInfo>
+                    <div id=playerName>
+                        Player
+                    </div>
+                    <div id=playerRank>
+                        Elo 1000
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</header>
+
+  <div class="container">
+    <h1>Ma liste d'amis</h1>
+    <div id="friendList">
+    </div>
+  </div>
+  <button class="chatbot-toggler">
+  </button>
+
+  <div class="chatbot">
+    <header>
+      <h2>Chat avec </h2>
+      <span class="close-btn material-symbols-outlined"></span>
+    </header>
+    <ul class="chatbox">
+      <li class="chat incoming">
+        <span s="material-symbols-outlined">
+
+        </span>
+      </li>
+    </ul>
+    <div class="chat-input">
+      <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+      <span id="send-btn" class="material-symbols-rounded">
+      </span>
+    </div>
+    </div>
+
+
+    <script src="../index.js"></script>
+    <script src="../js/socket.io.js"> </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async function () {
+        socket = io("/api/friendChat");
+
+        const usernameCookie = document.cookie.split('; ').find(row => row.startsWith('nomCookie='));
+        if (!usernameCookie) {
+          alert("Vous n'êtes pas connecté");
+          window.location.href = "../index.html";
+          return;
+        }
+        nameUser = usernameCookie.split('=')[1];
+        const hostname = window.location.hostname;
+        let api = "http://" + hostname + ":8000/api/getFriends";
+        await fetch(api, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username: nameUser })
+        })
+          .then(response => response.json())
+          .then(data => {
+            const friends = data.nbNewMessage;
+            const friendRequest = document.getElementById("friendList");
+            for (const result of friends) {
+              let friend = result.friend;
+              const friendElement = document.createElement("div");
+              friendElement.classList.add("friend-container");
+
+
+              const nameElement = document.createElement("span");
+              nameElement.textContent = friend;
+
+              const chatButton = document.createElement("button");
+              chatButton.setAttribute("id", friend);
+
+              const img = document.createElement("img");
+              img.setAttribute("src", "../assets/img/chat2.png");
+              img.setAttribute("alt", "chat");
+              img.style.width = "50%";
+              img.style.height = "50%";
+              chatButton.appendChild(img);
+
+              const nbMessage = document.createElement("span");
+              nbMessage.textContent = result.nbMessage; 
+
+
+              chatButton.classList.add("chatbot-toggler");
+              chatButton.onclick = function () {
+                const chatHeader = document.querySelector(".chatbot header h2");
+                chatHeader.textContent = "Chat avec " + friend;
+                document.body.classList.toggle("show-chatbot");
+                if (!document.body.classList.contains("show-chatbot")) {
+                  window.location.reload(); 
+                }
+                friendName = chatButton.getAttribute("id");
+                updateConv(nameUser, friendName);
+
+                socket.emit('join', nameUser, friendName);
+
+                socket.on('updateMessage', async () => {
+                  await updateConv(nameUser, friendName);
+                });
+
+              };
+
+              const pvpButton = document.createElement("button");
+              pvpButton.setAttribute("id", friend);
+              pvpButton.textContent = "DEFIER";
+              pvpButton.onclick = function () {
+                const friendName = pvpButton.getAttribute("id");
+                window.location.href = "../Game-Page?mode=1vs1Friend&playerid=" + nameUser + "&friend=" + friendName;
+              };
+
+              friendElement.appendChild(nameElement);
+              
+              friendElement.appendChild(chatButton);
+              friendElement.appendChild(nbMessage);
+              friendElement.appendChild(pvpButton);
+              friendRequest.appendChild(friendElement);
+              
+              adjustZoom();
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      });
+    </script>
+    <script src="../FriendList/friendList.js"></script>
+
+</body> 
+
+</html>

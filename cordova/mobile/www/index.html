@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Main-Page/mainPage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="header.css" rel="stylesheet">
+    <title>GamePage</title>
+</head>
+
+<body>
+    <header>
+        <div class="upperBtns">
+            <a href="signUp">
+                <button id=signUp>
+                    S'inscrire
+                </button>
+            </a>
+            <a href="signIn">
+                <button id=signIn>
+                    Se connecter
+                </button>
+            </a>
+        </div>
+
+        <a href="..">
+            <h1>CocoRidor</h1>
+        </a>
+
+
+        <div id=playerCard>
+            <a href="profile">
+                <div id=playerProfile>
+                    <img src="../Main-Page/logo.png" id="playerPicture" alt="Photo de profil">
+                    <div id=playerInfo>
+                        <div id=playerName>
+                            Player
+                        </div>
+                        <div id=playerRank>
+                            Elo 1000
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div id="GamePlaySelection">
+        <div class=buttonContainer>
+            <div class="iconContainer">
+                <img class="icon" src="Main-Page/gameIcon.png" alt="game">
+            </div>
+            <div class="iconContainer">
+                <img class="icon" src="Main-Page/settingsIcon.png" alt="settings">
+            </div>
+        </div>
+
+        <div class=buttonContainer>
+            <a href="Game-Page?mode=local">
+                <button class=btn class=gameModeButton>
+                    Jouer en local
+                </button>
+            </a>
+            <a href="FriendPage/">
+                <button class=btn class=gameModeButton>
+                    Demande d'Ami
+                    <span id="badgeFriend">0</span>
+                </button>
+            </a>
+        </div>
+        <div class=buttonContainer>
+            <a href="Game-Page?mode=newAi&playerid=user" class="needID">
+                <button class=btn class=gameModeButton>
+                    Nouvelle partie IA
+                </button>
+            </a>
+            <a href="GameDisplayer?playerid=user" class="needID">
+                <button class=btn class=gameModeButton>
+                    Reprendre partie IA
+                </button>
+            </a>
+        </div>
+
+        <div class=buttonContainer>
+            <a href="Game-Page?mode=1vs1&playerid=user" class="needID">
+                <button class=btn class=gameModeButton>
+                    Jouer en ligne
+                </button>
+            </a>
+            <a href="FriendList/">
+                <button class=btn class=gameModeButton>
+                    Liste d'Amis
+                    <span id="badgeMessage">0</span>
+                </button>
+
+            </a>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <script src="index.js"></script>
+
+</body>
+
+</html>
