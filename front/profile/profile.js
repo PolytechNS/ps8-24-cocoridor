@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         let achievementGrid = document.getElementById("achievementGrid")
         if(achievementGrid==null)console.error("Grid Not Found")
         else {
-            let maxNbRow = 10
-            let maxNbCol = 10
+            let maxNbRow = 5
+            let maxNbCol = 7
             let title = document.getElementById("achievementTitle")
             let description = document.getElementById("achievementDescription")
             let reward = document.getElementById("achievementReward")
@@ -112,12 +112,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                 line.style.display="flex"
                 line.style.height=(100/maxNbCol)+"%"
                 for(let j=0;j<maxNbRow;j++){
-                    const selectedAchievement = Achievements[achievementsKeys[(i*(maxNbCol))+j]]
+                    const selectedAchievement = Achievements[achievementsKeys[(j*(maxNbCol))+i]]
                     let row = document.createElement("div");
                     row.classList.add("achievementGrid")
                     row.style.width=(100/maxNbRow)+"%"
                     row.style.backgroundColor="white"
                     row.style.border = "1px solid grey"
+                    line.appendChild(row);
                     if(!selectedAchievement)continue;
                     console.log(selectedAchievement?.title)
                     for(let current of userKeys){
@@ -172,7 +173,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     }
                     row.addEventListener("mouseenter",displayAchievement)
                     row.addEventListener("mousedown",displayAchievement)
-                    line.appendChild(row);
                 }
                 achievementGrid.appendChild(line)
                 
