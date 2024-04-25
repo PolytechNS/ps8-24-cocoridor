@@ -48,8 +48,12 @@ let playerName;
                     playerRank = 1000;
                 }
                 document.getElementById('playerRank').textContent = 'Elo ' + playerRank;
-                badge.textContent=data.nbMessage;
-
+                //count number of elements in data.convs.new
+                let nbMessage = 0;
+                for(const conv of data.convs.new){
+                    nbMessage += conv.messages.length;
+                }
+                badge.textContent= nbMessage;
             })
             .catch(error => {
                 console.error('Error:', error);
