@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         let achievementGrid = document.getElementById("achievementGrid")
         if(achievementGrid==null)console.error("Grid Not Found")
         else {
-            let maxNbRow = 10
-            let maxNbCol = 10
+            let maxNbRow = 6
+            let maxNbCol = 6
             let title = document.getElementById("achievementTitle")
             let description = document.getElementById("achievementDescription")
             let reward = document.getElementById("achievementReward")
