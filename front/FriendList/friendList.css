@@ -16,6 +16,10 @@ body {
 .friend-container {
   display: flex;
   align-items: center;
+  border:2px solid #000;
+  border-radius: 5px;
+  justify-content:space-evenly ;
+
 }
 .container {
     min-height: 90%;
@@ -323,7 +327,21 @@ h1 {
   }
   
   
-  
+  button{
+ 
+    background-color: #ffb300; /* Green background */
+    border-color: #c00;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border: 2px solid black;
+  }
   
   /* Styling for the Sign Up button */
   #signUp {
