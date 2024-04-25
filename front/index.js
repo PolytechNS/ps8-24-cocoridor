@@ -1,5 +1,6 @@
 var btnTab=document.getElementsByClassName('btn')
-var badge = document.getElementById('badge')
+var badgeMessage = document.getElementById('badgeMessage')
+var badgeFriend = document.getElementById('badgeFriend')
 
 Array.from(btnTab).forEach(element => {
   var initialElement=element.style;
@@ -43,17 +44,17 @@ let playerName;
         })
             .then(response => response.json())
             .then(data => {
-                playerRank = data.elo;
+                playerRank = data.stats.elo;
                 if(playerRank == undefined || playerRank == '') {
                     playerRank = 1000;
                 }
                 document.getElementById('playerRank').textContent = 'Elo ' + playerRank;
-                //count number of elements in data.convs.new
                 let nbMessage = 0;
                 for(const conv of data.convs.new){
                     nbMessage += conv.messages.length;
                 }
-                badge.textContent= nbMessage;
+                badgeMessage.textContent= nbMessage;
+                badgeFriend.textContent = data.friends.request.length;
             })
             .catch(error => {
                 console.error('Error:', error);

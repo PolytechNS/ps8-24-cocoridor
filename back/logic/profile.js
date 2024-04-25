@@ -118,13 +118,17 @@ class PlayerAccount {
     }
     /**
      * 
-     * @param {Achievements} achievement 
+     * @param {{key:string,title:String,value:string,reward?:String[][]}[]} achievements
      */
-    async addAchievements(achievement){
-        if(Achievements[achievement.key]==null || this.achievements.includes(achievement)){console.log("false");return false;}
-        for(let achieve of this.achievements) if(achieve.key== achievement.key)return false;
-        if(await apiQuery.addAchievement(this.username,achievement)){console.log("false2");return false;}
-        this.achievements.push(achievement)
+    async addAchievements(achievements){
+        let remainingAchievement = []
+        for(let achievement of achievements){
+            if(Achievements[achievement.key]==null){console.info(achievement.title,"don't exist"); continue;}
+            for(let achieve of this.achievements) if(achieve.key == achievement.key){console.info("user already have",achievement.title); continue;}
+            remainingAchievement.push(achievement);
+            this.achievements.push(achievement)
+        }
+        await apiQuery.addAchievement(this.username,remainingAchievement)
         return true;
     }
 
@@ -247,39 +251,39 @@ const Achievements = {
  * @param {PlayerAccount} user 
  */
 async function checkStatsAchievement(user){
-
+    let potentialAchievement = []
     //AI Game
-    if(user.stats.AiPlay>=25) await user.addAchievements(Achievements.AiGameTwentyFive);
-    if(user.stats.AiPlay>= 5) await user.addAchievements(Achievements.AiGameFive);
-    if(user.stats.AiPlay>= 1) await user.addAchievements(Achievements.AiGamePlayed);
+    if(user.stats.AiPlay>=25) potentialAchievement.push(Achievements.AiGameTwentyFive);
+    if(user.stats.AiPlay>= 5) potentialAchievement.push(Achievements.AiGameFive);
+    if(user.stats.AiPlay>= 1) potentialAchievement.push(Achievements.AiGamePlayed);
 
-    if(user.stats.AiPlayVictory>= 1) await user.addAchievements(Achievements.WinAiGame);
+    if(user.stats.AiPlayVictory>= 1) potentialAchievement.push(Achievements.WinAiGame);
     
     //Friends
-    if(user.friends.list.length >= 10) await user.addAchievements(Achievements.TenFriends);
-    if(user.friends.list.length >= 5) await user.addAchievements(Achievements.FiveFriends);
-    if(user.friends.list.length >= 1) await user.addAchievements(Achievements.newFriend);
+    if(user.friends.list.length >= 10) potentialAchievement.push(Achievements.TenFriends);
+    if(user.friends.list.length >= 5) potentialAchievement.push(Achievements.FiveFriends);
+    if(user.friends.list.length >= 1) potentialAchievement.push(Achievements.newFriend);
 
-    if(user.stats.FriendPlayVictory>= 1) await user.addAchievements(Achievements.WinFriendGame);
+    if(user.stats.FriendPlayVictory>= 1) potentialAchievement.push(Achievements.WinFriendGame);
 
     //Friend Game
-    if(user.stats.FriendPlay >= 25) await user.addAchievements(Achievements.FriendGameTwentyFive);
-    if(user.stats.FriendPlay >= 5) await user.addAchievements(Achievements.FriendGameFive);
-    if(user.stats.FriendPlay >= 1) await user.addAchievements(Achievements.FriendGamePlayed);
+    if(user.stats.FriendPlay >= 25) potentialAchievement.push(Achievements.FriendGameTwentyFive);
+    if(user.stats.FriendPlay >= 5) potentialAchievement.push(Achievements.FriendGameFive);
+    if(user.stats.FriendPlay >= 1) potentialAchievement.push(Achievements.FriendGamePlayed);
     
 
     //Online Game
-    if(user.stats.OnlinePlay >= 100) await user.addAchievements(Achievements.OnlineGameHundred);
-    if(user.stats.OnlinePlay >= 10) await user.addAchievements(Achievements.OnlineGameTen);
-    if(user.stats.OnlinePlay >= 1) await user.addAchievements(Achievements.OnlineGamePlayed);
+    if(user.stats.OnlinePlay >= 100) potentialAchievement.push(Achievements.OnlineGameHundred);
+    if(user.stats.OnlinePlay >= 10) potentialAchievement.push(Achievements.OnlineGameTen);
+    if(user.stats.OnlinePlay >= 1) potentialAchievement.push(Achievements.OnlineGamePlayed);
     
-    if(user.stats.OnlinePlayVictory>= 1) await user.addAchievements(Achievements.WinOnlineGame);
+    if(user.stats.OnlinePlayVictory>= 1) potentialAchievement.push(Achievements.WinOnlineGame);
 
-    if(user.stats.elo>= 1500) await user.addAchievements(Achievements.EloOneTFiveH);
-    if(user.stats.elo>= 1400) await user.addAchievements(Achievements.EloOneTFourH);
-    if(user.stats.elo>= 1300) await user.addAchievements(Achievements.EloOneTThreeH);
-    if(user.stats.elo>= 1200) await user.addAchievements(Achievements.EloOneTTwoH);
-    if(user.stats.elo>= 1100) await user.addAchievements(Achievements.EloOneTOneH);
+    if(user.stats.elo>= 1500) potentialAchievement.push(Achievements.EloOneTFiveH);
+    if(user.stats.elo>= 1400) potentialAchievement.push(Achievements.EloOneTFourH);
+    if(user.stats.elo>= 1300) potentialAchievement.push(Achievements.EloOneTThreeH);
+    if(user.stats.elo>= 1200) potentialAchievement.push(Achievements.EloOneTTwoH);
+    if(user.stats.elo>= 1100) potentialAchievement.push(Achievements.EloOneTOneH);
 
 
     //General Stats
@@ -287,20 +291,20 @@ async function checkStatsAchievement(user){
         let totalGame = user.stats.AiPlay  + user.stats.FriendPlay + user.stats.LocalPlay + user.stats.OnlinePlay
         let totalVictory = user.stats.AiPlayVictory + user.stats.FriendPlayVictory + user.stats.OnlinePlayVictory
 
-        if(totalGame>= 1000)await user.addAchievements(Achievements.OneThousandGames);
-        if(totalGame>= 250)await user.addAchievements(Achievements.TwoHundredFiftyGames);
-        if(totalGame>= 50)await user.addAchievements(Achievements.FiftyGames);
-        if(totalGame>= 10)await user.addAchievements(Achievements.TenGames);
-        if(totalGame>= 1)await user.addAchievements(Achievements.OneGame);
+        if(totalGame>= 1000)potentialAchievement.push(Achievements.OneThousandGames);
+        if(totalGame>= 250)potentialAchievement.push(Achievements.TwoHundredFiftyGames);
+        if(totalGame>= 50)potentialAchievement.push(Achievements.FiftyGames);
+        if(totalGame>= 10)potentialAchievement.push(Achievements.TenGames);
+        if(totalGame>= 1)potentialAchievement.push(Achievements.OneGame);
         
-        if(totalVictory>= 1000)await user.addAchievements(Achievements.OneThousandVictory);
-        if(totalVictory>= 250)await user.addAchievements(Achievements.TwoHundredFiftyVictory);
-        if(totalVictory>= 50)await user.addAchievements(Achievements.FiftyVictory);
-        if(totalVictory>= 10)await user.addAchievements(Achievements.TenVictory);
-        if(totalVictory>= 1)await user.addAchievements(Achievements.OneVictory);
+        if(totalVictory>= 1000)potentialAchievement.push(Achievements.OneThousandVictory);
+        if(totalVictory>= 250)potentialAchievement.push(Achievements.TwoHundredFiftyVictory);
+        if(totalVictory>= 50)potentialAchievement.push(Achievements.FiftyVictory);
+        if(totalVictory>= 10)potentialAchievement.push(Achievements.TenVictory);
+        if(totalVictory>= 1)potentialAchievement.push(Achievements.OneVictory);
         
     }
-
+    user.addAchievements(potentialAchievement)
 }
 
 exports.Achievements = Achievements;

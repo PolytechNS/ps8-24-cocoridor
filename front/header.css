@@ -193,12 +193,19 @@ header h1 {
 
 
   
-#badge {
+#badgeMessage {
     padding: 5px 10px;
     border-radius: 50%;
     background: red;
     color: white;
   }
+
+#badgeFriend {
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}
 
   /*telephone paysage*/
 @media screen and (max-height: 600px) {

@@ -673,31 +673,27 @@ const GameType = {
     console.log(winners);
     switch(gameType){
         case GameType.Local:
-            console.log("Local")
             for(let player of playerList) player.stats.LocalPlay = player.stats.LocalPlay+1
             break;
         case GameType.AgainstFriend:
-            console.log("AgainstFriend")
             for(let player of playerList){
                 player.stats.FriendPlay = player.stats.FriendPlay + 1
-                for(let winner of winners)if(winner.username==player.username){console.log("victory+");player.stats.FriendPlayVictory +=1; break;}
+                for(let winner of winners)if(winner.username==player.username){player.stats.FriendPlayVictory +=1; break;}
             }
             break;
         case GameType.AgainstAI:
-            console.log("AgainstAI")
             for(let player of playerList){
                 player.stats.AiPlay = player.stats.AiPlay + 1
                 for(let winner of winners){
                     if(winner)
-                        if(winner.username==player.username){console.log("victory+");player.stats.AiPlayVictory +=1; break;}
+                        if(winner.username==player.username){player.stats.AiPlayVictory +=1; break;}
                 }
             }
             break;
         case GameType.OneVsOne:
-            console.log("OneVsOne")
             for(let player of playerList){
                 player.stats.OnlinePlay = player.stats.OnlinePlay + 1
-                for(let winner of winners)if(winner.username==player.username){console.log("victory+");player.stats.OnlinePlayVictory +=1; break;}
+                for(let winner of winners)if(winner.username==player.username){player.stats.OnlinePlayVictory +=1; break;}
                 
             }
 
@@ -712,7 +708,6 @@ const GameType = {
         await db.updateUser(player)//Envois Stats
        
     }
-    console.log("ACHIEVEMENT TIME")
     for(let player of playerList) profile.checkStatsAchievement(player);
     if(saveId!=null) apiQuery.deleteGameSave(saveId)
     back.deleteGame(gameId)
