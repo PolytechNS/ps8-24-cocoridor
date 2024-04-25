@@ -424,7 +424,7 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         let gamePlayers = [];
         gamePlayers.push({id: myId, socket: socket, elo: myElo});
         for(let player of players) {
-            if(player.getid() !== myId){
+            if(player.id !== myId){
                 if(player.elo >=myElo-(50+QueueTimer*3) && player.elo <= myElo+(50+QueueTimer*3)){
                     console.log(myElo)
                     console.log(player.elo)
