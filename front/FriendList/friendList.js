@@ -36,7 +36,7 @@ const createChatLi = (message, className) => {
   let chatContent = className === "outgoing" ? 
   `<span s="material-symbols-outlined">
       <img
-          src="../Game-Page/FermierJ2.png"
+          src="../assets/img/FermierJ2.png"
           alt="FermierJ2"
           width="100%"
           height="100%"
@@ -44,7 +44,7 @@ const createChatLi = (message, className) => {
   </span><p></p>` : 
   `<span s="material-symbols-outlined">
       <img
-          src="../Game-Page/PouletJ1.png"
+          src="../assets/img/PouletJ1.png"
           alt="PouletJ1"
           width="100%"
           height="100%"
