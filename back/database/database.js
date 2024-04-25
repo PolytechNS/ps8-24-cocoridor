@@ -7,7 +7,6 @@ const client = new MongoClient(MONGO_URL);
 const { ObjectId } = require('mongodb');
 const { GameState } = require("../logic/back.js");
 const profile = require('../logic/profile.js');
-const { addAchievement } = require('../queryManagers/api.js');
 
 async function getMongoDatabase() {
     if (!!client && !!client.topology && client.topology.isConnected()) {

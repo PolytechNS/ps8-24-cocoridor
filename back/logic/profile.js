@@ -9,11 +9,11 @@ class PlayerAccount {
       bot.skins = {
           color : null,
           wallColor : null,
-          humanSkin : ImageRef.Fermier,
-          beastSkin : ImageRef.Poulet,
+          humanSkin : ImageRef.FermierRobot,
+          beastSkin : ImageRef.PouletRobot,
           wallSkin : "",
-          humanSkins : [ImageRef.Fermier],
-          beastSkins : [ImageRef.Poulet],
+          humanSkins : [ImageRef.FermierRobot],
+          beastSkins : [ImageRef.PouletRobot],
           wallSkins : []
       }
       bot.difficulty = difficulty
@@ -171,13 +171,19 @@ class PlayerAccount {
         return "rgb("+this.R+","+this.G+","+this.B+")"
       }
 }
+
 const ImageRef = {
     Fermier : "/assets/img/FermierJ2.png",
     Poulet : "/assets/img/PouletJ1.png",
     Fermier2 : "/assets/img/Fermier2.webp",
     Poulet2 : "/assets/img/Poulet2.png",
-    MatchMakingGif : "/assets/img/polos.gif"
+    MatchMakingGif : "/assets/img/polos.gif",
+    Colonel : "/assets/img/colonel.png",
+    ChickenNugget : "/assets/img/chickenNuggets.png",
+    PouletRobot : "/assets/img/PouletRobot.png",
+    FermierRobot : "/assets/img/FermierRobot.png"
 }
+
 const Achievements = {
     // Friends
     newFriend : {key:"newFriend",value:"Avoir un amis"},
@@ -189,13 +195,13 @@ const Achievements = {
     SendMessage : {key:"SendMessage",value:"Envoyer un message a un amis"},
 
     // General Games
-    OneGame : {key:"OneGame",value:"Faire votre premiere partie"},
+    OneGame : {key:"OneGame",value:"Faire votre premiere partie",reward:[null,ImageRef.Colonel]},
     TenGames : {key:"TenGames",value:"Faire 10 parties"},
     FiftyGames : {key:"FiftyGames",value:"Faire 50 parties"},
     TwoHundredFiftyGames : {key:"TwoHundredFiftyGames",value:"Faire 250 parties"},
     OneThousandGames : {key:"OneThousandGames",value:"Faire 1000 parties"},
 
-    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie"},
+    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie",reward:[ImageRef.ChickenNugget,null]},
     TenVictory : {key:"TenVictory",value:"gagner 10 parties"},
     FiftyVictory : {key:"FiftyVictory",value:"gagner 50 parties"},
     TwoHundredFiftyVictory : {key:"TwoHundredFiftyVictory",value:"gagner 250 parties"},
@@ -203,11 +209,11 @@ const Achievements = {
     
 
     // Ai Play
-    AiGamePlayed : {key:"AiGamePlayed",value:"Jouer une partie contre une IA"},
+    AiGamePlayed : {key:"AiGamePlayed",value:"Jouer une partie contre une IA",reward:[null, ImageRef.FermierRobot]},
     AiGameFive : {key:"AiGameFive",value:"Jouer 5 parties contre une IA"},
     AiGameTwentyFive : {key:"AiGameTwentyFive",value:"Jouer 25 parties contre une IA"},
 
-    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA"},
+    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA",reward:[ImageRef.PouletRobot,null]},
 
     // Friend Play
     FriendGamePlayed : {key:"FriendGamePlayed",value:"Jouer une partie contre un amis"},
@@ -240,17 +246,42 @@ const Achievements = {
  * @param {PlayerAccount} user 
  */
 async function checkStatsAchievement(user){
+
+    //AI Game
     if(user.stats.AiPlay>=25) await user.addAchievements(Achievements.AiGameTwentyFive);
     if(user.stats.AiPlay>= 5) await user.addAchievements(Achievements.AiGameFive);
     if(user.stats.AiPlay>= 1) await user.addAchievements(Achievements.AiGamePlayed);
+
+    if(user.stats.AiPlayVictory>= 1) await user.addAchievements(Achievements.WinAiGame);
     
+    //Friends
+    if(user.friends.list.length >= 10) await user.addAchievements(Achievements.TenFriends);
+    if(user.friends.list.length >= 5) await user.addAchievements(Achievements.FiveFriends);
+    if(user.friends.list.length >= 1) await user.addAchievements(Achievements.newFriend);
+
+    if(user.stats.FriendPlayVictory>= 1) await user.addAchievements(Achievements.WinFriendGame);
+
+    //Friend Game
     if(user.stats.FriendPlay >= 25) await user.addAchievements(Achievements.FriendGameTwentyFive);
     if(user.stats.FriendPlay >= 5) await user.addAchievements(Achievements.FriendGameFive);
     if(user.stats.FriendPlay >= 1) await user.addAchievements(Achievements.FriendGamePlayed);
     
+
+    //Online Game
     if(user.stats.OnlinePlay >= 100) await user.addAchievements(Achievements.OnlineGameHundred);
     if(user.stats.OnlinePlay >= 10) await user.addAchievements(Achievements.OnlineGameTen);
     if(user.stats.OnlinePlay >= 1) await user.addAchievements(Achievements.OnlineGamePlayed);
+    
+    if(user.stats.OnlinePlayVictory>= 1) await user.addAchievements(Achievements.WinOnlineGame);
+
+    if(user.stats.elo>= 1500) await user.addAchievements(Achievements.EloOneTFiveH);
+    if(user.stats.elo>= 1400) await user.addAchievements(Achievements.EloOneTFourH);
+    if(user.stats.elo>= 1300) await user.addAchievements(Achievements.EloOneTThreeH);
+    if(user.stats.elo>= 1200) await user.addAchievements(Achievements.EloOneTTwoH);
+    if(user.stats.elo>= 1100) await user.addAchievements(Achievements.EloOneTOneH);
+
+
+    //General Stats
     {
         let totalGame = user.stats.AiPlay  + user.stats.FriendPlay + user.stats.LocalPlay + user.stats.OnlinePlay
         let totalVictory = user.stats.AiPlayVictory + user.stats.FriendPlayVictory + user.stats.OnlinePlayVictory
@@ -268,15 +299,7 @@ async function checkStatsAchievement(user){
         if(totalVictory>= 1)await user.addAchievements(Achievements.OneVictory);
         
     }
-    if(user.stats.elo>= 1500) await user.addAchievements(Achievements.EloOneTFiveH);
-    if(user.stats.elo>= 1400) await user.addAchievements(Achievements.EloOneTFourH);
-    if(user.stats.elo>= 1300) await user.addAchievements(Achievements.EloOneTThreeH);
-    if(user.stats.elo>= 1200) await user.addAchievements(Achievements.EloOneTTwoH);
-    if(user.stats.elo>= 1100) await user.addAchievements(Achievements.EloOneTOneH);
 
-    if(user.friends.list.length >= 10) await user.addAchievements(Achievements.TenFriends);
-    if(user.friends.list.length >= 5) await user.addAchievements(Achievements.FiveFriends);
-    if(user.friends.list.length >= 1) await user.addAchievements(Achievements.newFriend);
 }
 
 exports.Achievements = Achievements;

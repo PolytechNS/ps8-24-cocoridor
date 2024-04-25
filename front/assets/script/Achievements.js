@@ -1,4 +1,16 @@
 
+const ImageRef = {
+    Fermier : "/assets/img/FermierJ2.png",
+    Poulet : "/assets/img/PouletJ1.png",
+    Fermier2 : "/assets/img/Fermier2.webp",
+    Poulet2 : "/assets/img/Poulet2.png",
+    MatchMakingGif : "/assets/img/polos.gif",
+    Colonel : "/assets/img/colonel.png",
+    ChickenNugget : "/assets/img/chickenNuggets.png",
+    PouletRobot : "/assets/img/PouletRobot.png",
+    FermierRobot : "/assets/img/FermierRobot.png"
+}
+
 export const Achievements = {
     // Friends
     newFriend : {key:"newFriend",value:"Avoir un amis"},
@@ -10,13 +22,13 @@ export const Achievements = {
     SendMessage : {key:"SendMessage",value:"Envoyer un message a un amis"},
 
     // General Games
-    OneGame : {key:"OneGame",value:"Faire votre premiere partie"},
+    OneGame : {key:"OneGame",value:"Faire votre premiere partie",reward:[null,ImageRef.Colonel]},
     TenGames : {key:"TenGames",value:"Faire 10 parties"},
     FiftyGames : {key:"FiftyGames",value:"Faire 50 parties"},
     TwoHundredFiftyGames : {key:"TwoHundredFiftyGames",value:"Faire 250 parties"},
     OneThousandGames : {key:"OneThousandGames",value:"Faire 1000 parties"},
 
-    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie"},
+    OneVictory : {key:"OneVictory",value:"gagner votre premiere partie",reward:[ImageRef.ChickenNugget,null]},
     TenVictory : {key:"TenVictory",value:"gagner 10 parties"},
     FiftyVictory : {key:"FiftyVictory",value:"gagner 50 parties"},
     TwoHundredFiftyVictory : {key:"TwoHundredFiftyVictory",value:"gagner 250 parties"},
@@ -24,11 +36,11 @@ export const Achievements = {
     
 
     // Ai Play
-    AiGamePlayed : {key:"AiGamePlayed",value:"Jouer une partie contre une IA"},
+    AiGamePlayed : {key:"AiGamePlayed",value:"Jouer une partie contre une IA",reward:[null, ImageRef.FermierRobot]},
     AiGameFive : {key:"AiGameFive",value:"Jouer 5 parties contre une IA"},
     AiGameTwentyFive : {key:"AiGameTwentyFive",value:"Jouer 25 parties contre une IA"},
 
-    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA"},
+    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA",reward:[ImageRef.PouletRobot,null]},
 
     // Friend Play
     FriendGamePlayed : {key:"FriendGamePlayed",value:"Jouer une partie contre un amis"},
