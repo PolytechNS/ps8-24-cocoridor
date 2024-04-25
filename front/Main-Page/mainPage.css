@@ -66,3 +66,32 @@ html, body {
     justify-content: center;
     align-items: center;
 }
+
+
+/*telephone*/
+@media screen and (max-width: 600px) {
+
+    /*cache les images avec la classe "icon*/
+    .icon{
+        display: none;
+    }
+
+
+}
+
+/*telephone*/
+@media screen and (max-height: 600px) {
+
+    /*cache les images avec la classe "icon*/
+    .icon{
+        display: none;
+    }
+
+    #GamePlaySelection{
+        gap:20px;
+        padding-top:20px;
+    }
+
+
+}
+
