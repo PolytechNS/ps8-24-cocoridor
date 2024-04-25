@@ -670,7 +670,7 @@ const GameType = {
     let winners = []
     for(let winner of winnersInstance) {
         if(winner.fakePlayer)continue;
-        winners.push(await db.getUser(winner))
+        winners.push(await db.getUser(winner.username))
     }
     console.log(winners);
     switch(gameType){
@@ -960,7 +960,6 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         friendMatch[gameId].filter((e)=>e.getid() != myId )
         if(friendMatch[gameId].length==0){
             if (winners != null && winners.length!==0) {
-                console.log(winners);
                 endGameUpdate(GameType.AgainstFriend, saveId, gameId, playerList, winners)
             }
         }
