@@ -219,6 +219,8 @@ const Achievements = {
 
     WinAiGame : {key:"WinAiGame",title:"pas tres bien huilé",value:"Gagner une partie contre une IA",reward:[ImageRef.PouletRobot,null]},
 
+    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA"},
+
     // Friend Play
     FriendGamePlayed : {key:"FriendGamePlayed",title:"",value:"Jouer une partie contre un amis"},
     FriendGameFive : {key:"FriendGameFive",title:"",value:"Jouer 5 partie contre un amis"},
