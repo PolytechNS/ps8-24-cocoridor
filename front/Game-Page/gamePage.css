@@ -61,7 +61,7 @@ body {
     display:none;
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 70%;
     background: 	#FAFAD2;
 }
 
@@ -500,7 +500,7 @@ header h2 {
     display: inline-block;
     position: relative;
     margin: auto;
-    top: 95%;
+    top: 80%;
     width: min(9*var(--SIZETILEW) + 8*var(--SPACEBETWEENTILES)- 2px, 9*var(--SIZETILEH) + 8*var(--SPACEBETWEENTILES)- 2px);
     height: min(9*var(--SIZETILEW) + 8*var(--SPACEBETWEENTILES)- 2px, 9*var(--SIZETILEH) + 8*var(--SPACEBETWEENTILES)- 2px);
     transform: translateY(-50%);
