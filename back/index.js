@@ -666,6 +666,7 @@ const GameType = {
         if(player.fakePlayer)continue;
         playerList.push(await db.getUser(player.username))
     }
+    console.log(winnersInstance)
     let winners = []
     for(let winner of winnersInstance) {
         if(winner.fakePlayer)continue;
