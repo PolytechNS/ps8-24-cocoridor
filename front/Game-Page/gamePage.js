@@ -1,4 +1,7 @@
-
+let small=false;
+if(window.innerWidth <= 600 && window.innerHeight <= 750){
+  small = true;
+}
 
 
 
@@ -195,7 +198,7 @@ class BorderFront{
     this.element = document.createElement("div");
     let tile;
     let nextTile;
-    switch ((this.lng ? 1 : 0) + (this.lat ? 2 : 0)) {
+     switch ((this.lng ? 1 : 0) + (this.lat ? 2 : 0)) {
       case 1: // vertical border
         this.element.classList.add("verticalBorder");
         this.element.addEventListener("click", () => this.onClick(true));
@@ -354,8 +357,14 @@ function DisplayBoard(board,positions=null){
   let playerTurn = document.getElementById("playerTurn");
   playerTurn.innerHTML="";
   let img = document.createElement("img");
-  img.style.width = "100%"; 
-  img.style.height = "100%";
+  if (small) {
+    img.style.width = "auto"; 
+    img.style.height = "80%"; 
+  } else {
+    img.style.width = "100%";
+    img.style.height = "100%";
+  }
+
 
   img.src = playerList[turnNb%playerList.length].playerSkin
   playerTurn.appendChild(img)
@@ -363,7 +372,11 @@ function DisplayBoard(board,positions=null){
   else{playerTurn.appendChild(document.createTextNode("Au tour de "+playerList[turnNb%playerList.length].username+" de jouer"))};
   if(mode === "local") {
     let gC = document.getElementById("gameCover");
-    gC.style.cssText = "display : block; font-size: 50px;  text-align: center; margin:auto; padding-top: 200px;padding-bottom: 400px;";
+    if(small){
+      gC.style.cssText = "display : inline-block; font-size: 30px;  text-align: center; margin:auto ;top:95% ; height:100%; width:100%;padding-top: 40% ;";
+    }else{
+      gC.style.cssText = "display : block; font-size: 50px;  text-align: center; margin:auto; padding-top: 200px;padding-bottom: 400px;";
+    }
     gC.innerHTML = "Cliquez pour continuer ...";
   }
 }
