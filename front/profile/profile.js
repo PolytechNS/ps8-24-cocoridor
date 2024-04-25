@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         let achievementGrid = document.getElementById("achievementGrid")
         if(achievementGrid==null)console.error("Grid Not Found")
         else {
-            let maxNbRow = 10
-            let maxNbCol = 10
+            let maxNbRow = 6
+            let maxNbCol = 5
             let title = document.getElementById("achievementTitle")
             let description = document.getElementById("achievementDescription")
             let reward = document.getElementById("achievementReward")
@@ -118,9 +118,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                     let row = document.createElement("div");
                     row.classList.add("achievementGrid")
                     row.style.width=(100/maxNbRow)+"%"
+                    row.style.backgroundColor="white"
                     for(let current of userKeys){
                         if(current == selectedAchievement.key) {row.style.opacity=0;break;}
-                        else row.style.backgroundColor="white"
                     }
 
                     function displayAchievement(){
