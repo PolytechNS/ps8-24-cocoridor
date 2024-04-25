@@ -163,7 +163,6 @@ async function addMessage(username,friend,message){
     } else {
         conv.messages.push(username + "/" + message);
     }
-    await users.updateOne({ username: username }, { $set: { convs: user.convs } });
 
     const friendUser = await users.findOne({ username: friend });
     let friendConv = friendUser.convs.all.find(conv => conv.username === username);
@@ -178,7 +177,12 @@ async function addMessage(username,friend,message){
     } else {
         friendConvN.messages.push(username + "/" + message);
     }
+    await users.updateOne({ username: username }, { $set: { convs: user.convs } });
     await users.updateOne({ username: friend }, { $set: { convs: friendUser.convs } });
+    
+    profile.addAchievementTo([profile.Achievements.SendMessage],username).then((result)=>{
+        if(!result) console.error("An error occured while adding achievement here :(")
+      })
     return;
 }
 

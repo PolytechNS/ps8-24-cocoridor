@@ -1,5 +1,6 @@
 const apiQuery = require("../queryManagers/api")
 const profile = require("./profile")
+const db = require("../database/database")
 class GameParams{
   /**
    * 
@@ -872,13 +873,19 @@ class Border {
       let dirs = start.tileInDir(end);
       let path = this.game.aStar({start:start,ends:[end],maxCost:this.game.gameParams.travelDist});
       if(path==null) return undefined;
+      let jumpedOverPlayer = false
       while(path.node.occupied!=null){
+        jumpedOverPlayer = true;
         if(end==null) return undefined;
         path = this.game.aStar({start,ends:[end],maxCost:dirs.length,jumpwall:this.game.gameParams.jumpOverWall});
         if(path==null) return undefined;
         start = end;
         end = path.node.getTileInDir(dirs);
       }
+      
+      profile.addAchievementTo([profile.Achievements.JumpOverPlayer],player.username).then((result)=>{
+        if(!result) console.error("An error occured while adding achievement here :(")
+      })
       this.X = path.node.X;
       this.Y = path.node.Y;
   
@@ -966,6 +973,9 @@ class Border {
     }
     for(let border of borders) if(border.wallBy!=null) return null;
     if(game.playersCanReachEnd(borders)) return new Wall(game.id, player,borders);
+    profile.addAchievementTo([profile.Achievements.BerlinWall],player.username).then((result)=>{
+      if(!result) console.error("An error occured while adding achievement here :(")
+    })
     return null
   }
 

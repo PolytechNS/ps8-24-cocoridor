@@ -160,6 +160,11 @@ io.of("/api/AIgame").on('connection', (socket) => {
         }
         let nbWalls = back.getNbWalls(playerList);
         socket.emit("launch", back.BoardFor(gameId,me), turnNb, gameId, nbWalls);
+        
+        console.log("OVER HERE", profile.Achievements.RetrieveGame,me.username )
+        profile.addAchievementTo([profile.Achievements.RetrieveGame],me.username).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+        })
         if(playerList[turnNb%playerList.length].getid()==bot.getid()){
             let aiBoard = back.BoardFor(gameId, bot);
             {
@@ -183,6 +188,7 @@ io.of("/api/AIgame").on('connection', (socket) => {
             await saveGame(gameState, saveId);
             let newBoard = back.BoardFor(gameId, me);
             let nbWalls = back.getNbWalls(playerList);
+            
             socket.emit("updateBoard", newBoard, turnNb,nbWalls);
         }
     })
@@ -622,6 +628,9 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         socket.emit("choosePos", back.setUpBoard(gameId,me),playerList,turnNb,back.getNbWalls(playerList));
     });
     socket.on('message', (message,playerName) => {
+        profile.addAchievementTo([profile.Achievements.ReactToTheGame],playerName).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+        })
         io.of("/api/1vs1").to('room' + gameId).emit("message", message,playerName);
     });
     socket.on("disconnect",()=>{
@@ -939,7 +948,11 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         socket.emit("choosePos", back.setUpBoard(gameId,me),playerList,turnNb,back.getNbWalls(playerList));
     });
     socket.on('message', (message,playerName) => {
+        profile.addAchievementTo([profile.Achievements.ReactToTheGame],playerName).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+        })
         io.of("/api/1vs1Friend").to('room' + gameId).emit("message", message,playerName);
+        
     });
     socket.on("disconnect",()=>{
 

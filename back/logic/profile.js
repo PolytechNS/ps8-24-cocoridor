@@ -307,7 +307,21 @@ async function checkStatsAchievement(user){
     user.addAchievements(potentialAchievement)
 }
 
+/**
+ * 
+ * @param {{key:Value,title:String,value:String,reward:String[][]}} achievements 
+ * @param {String} username 
+ * @return {Promise<Boolean>}
+ */
+async function addAchievementTo(achievements,username){
+    const user = await db.getUser(username);
+    if(!user)return false;
+    console.log("adding", achievements)
+    return user.addAchievements(achievements);
+}
 exports.Achievements = Achievements;
 exports.checkStatsAchievement = checkStatsAchievement;
+exports.addAchievementTo = addAchievementTo
 exports.PlayerAccount = PlayerAccount;
 exports.Color = Color;
+exports.ImageRef = ImageRef
