@@ -140,17 +140,19 @@
 
               const pvpButton = document.createElement("button");
               pvpButton.setAttribute("id", friend);
-              pvpButton.textContent = "Défier";
+              pvpButton.textContent = "DEFIER";
               pvpButton.onclick = function () {
                 const friendName = pvpButton.getAttribute("id");
                 window.location.href = "../Game-Page?mode=1vs1Friend&playerid=" + nameUser + "&friend=" + friendName;
               };
 
               friendElement.appendChild(nameElement);
+              
               friendElement.appendChild(chatButton);
+              friendElement.appendChild(nbMessage);
               friendElement.appendChild(pvpButton);
               friendRequest.appendChild(friendElement);
-              friendElement.appendChild(nbMessage);
+              
               adjustZoom();
             }
           })

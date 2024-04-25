@@ -7,6 +7,8 @@ const ImageRef = {
     MatchMakingGif : "/assets/img/polos.gif",
     Colonel : "/assets/img/colonel.png",
     ChickenNugget : "/assets/img/chickenNuggets.png",
+    PouletRobot : "/assets/img/PouletRobot.png",
+    FermierRobot : "/assets/img/FermierRobot.png"
 }
 
 export const Achievements = {
@@ -34,11 +36,11 @@ export const Achievements = {
     
 
     // Ai Play
-    AiGamePlayed : {key:"AiGamePlayed",value:"Jouer une partie contre une IA"},
+    AiGamePlayed : {key:"AiGamePlayed",value:"Jouer une partie contre une IA",reward:[null, ImageRef.FermierRobot]},
     AiGameFive : {key:"AiGameFive",value:"Jouer 5 parties contre une IA"},
     AiGameTwentyFive : {key:"AiGameTwentyFive",value:"Jouer 25 parties contre une IA"},
 
-    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA"},
+    WinAiGame : {key:"WinAiGame",value:"Gagner une partie contre une IA",reward:[ImageRef.PouletRobot,null]},
 
     // Friend Play
     FriendGamePlayed : {key:"FriendGamePlayed",value:"Jouer une partie contre un amis"},
