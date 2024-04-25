@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                 }
                             }
                         }
-                        title.textContent="Title: "+selectedAchievement.key
+                        title.textContent="Title: "+selectedAchievement.title
                         description.textContent="description: "+selectedAchievement.value
                     }
                     row.addEventListener("mouseenter",displayAchievement)

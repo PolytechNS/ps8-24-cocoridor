@@ -2,7 +2,6 @@
 
 
 
-
 let boardLength = 9;
 let boardHeight = 9;
 let playerList;

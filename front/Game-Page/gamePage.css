@@ -461,7 +461,7 @@ header h2 {
 }
 
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: 850px){
   .tile{
     width: var(--SIZETILEW);
     height: var(--SIZETILEH);
