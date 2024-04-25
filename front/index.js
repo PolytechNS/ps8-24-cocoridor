@@ -44,7 +44,7 @@ let playerName;
         })
             .then(response => response.json())
             .then(data => {
-                playerRank = data.elo;
+                playerRank = data.stats.elo;
                 if(playerRank == undefined || playerRank == '') {
                     playerRank = 1000;
                 }
