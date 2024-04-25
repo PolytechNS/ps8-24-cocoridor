@@ -128,7 +128,6 @@ class PlayerAccount {
             remainingAchievement.push(achievement);
             this.achievements.push(achievement)
         }
-        console.log("achievmeent send to back",remainingAchievement)
         await apiQuery.addAchievement(this.username,remainingAchievement)
         return true;
     }

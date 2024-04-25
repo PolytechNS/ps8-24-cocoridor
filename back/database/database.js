@@ -201,7 +201,6 @@ async function getNewConv(username,friend){
 
 async function changeSkin(username, beast, human) {
     const users = await getUsers();
-    console.log(username, beast, human)
     await users.updateOne({ username: username }, { $set: { 
         "skins.beastSkin": beast, 
         "skins.humanSkin": human 

@@ -3,7 +3,6 @@ import { Achievements } from "../assets/script/Achievements.js";
 document.addEventListener('DOMContentLoaded', async function() {
     const imgBeast= document.getElementById('imgBeast');
     const imgFarm= document.getElementById('imgFarm');   
-    console.log(Achievements.AiGameFive)
 
     const usernameCookie = document.cookie.split('; ').find(row => row.startsWith('nomCookie='));
     if (!usernameCookie) {
@@ -96,7 +95,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
     });
-    console.log("Achievement Part")
     {   
         let achievementsKeys = Object.keys(Achievements)
         let userKeys = []
@@ -155,10 +153,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                                 }
 
                             }else{
-                                console.log("displayAchievement: ",selectedAchievement)
                                 document.getElementById("achievementDisplay").classList.add("locked")
                                 reward.textContent="Rewards :";
-                                console.log(skinsToUnlock.length)
                                 if(skinsToUnlock.length==0)reward.style.visibility="hidden";
                                 else {
                                     reward.style.visibility="visible";
