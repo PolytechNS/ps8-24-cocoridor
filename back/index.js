@@ -424,7 +424,7 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         let gamePlayers = [];
         gamePlayers.push({id: myId, socket: socket, elo: myElo});
         for(let player of players) {
-            if(player.id !== myId){
+            if(player.getid() !== myId){
                 if(player.elo >=myElo-(50+QueueTimer*3) && player.elo <= myElo+(50+QueueTimer*3)){
                     console.log(myElo)
                     console.log(player.elo)
@@ -781,10 +781,11 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         let roomKey = myId>=friendid?myId+friendid:friendid+myId;
         playersRooms[roomKey] = playersRooms[roomKey] || [];
         let alreadyIn = false;
-        for( let player  in playersRooms[roomKey]){
+        console.log(playersRooms[roomKey])
+        for( let player of playersRooms[roomKey]){
             if(player.id === playerid){
-                players.socket.disconnect();
-                players.socket = socket;
+                player.socket.disconnect();
+                player.socket = socket;
                 alreadyIn = true;
             }
         }

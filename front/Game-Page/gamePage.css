@@ -501,8 +501,8 @@ header h2 {
     position: relative;
     margin: auto;
     top: 95%;
-    width: min(9*var(--SIZETILEW) + 8*var(--SPACEBETWEENTILES)-2px, 9*var(--SIZETILEH) + 8*var(--SPACEBETWEENTILES)-2px);
-    height: min(9*var(--SIZETILEW) + 8*var(--SPACEBETWEENTILES)-2px, 9*var(--SIZETILEH) + 8*var(--SPACEBETWEENTILES)-2px);
+    width: min(9*var(--SIZETILEW) + 8*var(--SPACEBETWEENTILES)- 2px, 9*var(--SIZETILEH) + 8*var(--SPACEBETWEENTILES)- 2px);
+    height: min(9*var(--SIZETILEW) + 8*var(--SPACEBETWEENTILES)- 2px, 9*var(--SIZETILEH) + 8*var(--SPACEBETWEENTILES)- 2px);
     transform: translateY(-50%);
     border: 2px solid black;
   }
