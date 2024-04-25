@@ -106,7 +106,6 @@ class GameState{
     }
     firstPlayer = new PlayerGameInstance(firstPlayer,this.topTiles,this.bottomTiles,1,this.gameParams.nbWallsPerPlayer,this.id);
     secondPlayer = new PlayerGameInstance(secondPlayer,this.bottomTiles,this.topTiles,-1,this.gameParams.nbWallsPerPlayer,this.id);
-    console.log(firstPlayer,secondPlayer)
     this.gameParams.playerList = []
     this.gameParams.playerList.push(firstPlayer);
     this.gameParams.playerList.push(secondPlayer);
@@ -977,7 +976,6 @@ function execRandomMove(gameId,playerId){
  * @returns 
  */
 function setPlayers(gameId,playersAccount,randomise = true){
-  console.log(playersAccount)
   let game = findGame(gameId);
   if(game ==null) return null;
   return game.setPlayers(playersAccount,randomise);

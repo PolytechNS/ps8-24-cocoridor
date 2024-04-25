@@ -14,6 +14,15 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/*pour téléphone*/
+@media screen and (max-width: 600px) {
+    header {
+        justify-content: flex-start;
+    }
+}
+
+
+
 a{
     text-decoration: none; /* Suppression du soulignement */
 
@@ -32,6 +41,15 @@ header h1 {
     margin-left: 5%;
 }
 
+/*telephone*/
+@media screen and (max-width: 600px) {
+
+    .upperBtns {
+        gap: 5px;
+        display:grid;
+    }
+}
+
 #playerProfile {
     display: flex;
     justify-content:center;
@@ -40,10 +58,24 @@ header h1 {
     padding-left: 15px;
     padding-right: 15px;
     gap: 10px;
-    width: 200px;
+     width: 200px; 
+    
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+/*pour téléphone*/
+@media screen and (max-width: 600px) {
+    header h1 {
+        font-size: 35px;
+    }
+    #playerProfile {
+        display:grid;
+        width: 50px;
+        gap:5px;
+        padding:3px;
+    }
 }
 
 #playerInfo {
@@ -72,6 +104,13 @@ header h1 {
     padding: 5px;
 }
 
+/*telephone*/
+@media screen and (max-width: 600px) {
+    #playerName {
+        font-size: 10px;
+    }
+}
+
 
 #playerRank {
     font-size: 22px;
@@ -79,6 +118,13 @@ header h1 {
     color: #fff;
     padding: 5px;
     width: fit-content;
+}
+
+/*telephone*/
+@media screen and (max-width: 600px) {
+    #playerRank {
+        font-size: 15px;
+    }
 }
 
 
@@ -101,6 +147,8 @@ header h1 {
     transition-duration: 0.4s;
     cursor: pointer;
 }
+
+
 
 #signUp:hover {
     transform: scale(1.05);
@@ -130,11 +178,42 @@ header h1 {
     box-shadow: 0 0 10px #00000028;
 }
 
+/*telephone*/
+@media screen and (max-width: 600px) {
+    #signUp {
+        padding: 5px 10px;
+        font-size: 6px;
+    }
+
+    #signIn {
+        padding: 5px 10px;
+        font-size: 6px;
+    }
+}
+
 
   
-#badge {
+#badgeMessage {
     padding: 5px 10px;
     border-radius: 50%;
     background: red;
     color: white;
   }
+
+#badgeFriend {
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}
+
+  /*telephone paysage*/
+@media screen and (max-height: 600px) {
+    header h1{
+        font-size: 30px;
+    }
+    
+    
+
+
+}

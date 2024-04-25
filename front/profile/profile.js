@@ -3,7 +3,6 @@ import { Achievements } from "../assets/script/Achievements.js";
 document.addEventListener('DOMContentLoaded', async function() {
     const imgBeast= document.getElementById('imgBeast');
     const imgFarm= document.getElementById('imgFarm');   
-    console.log(Achievements.AiGameFive)
 
     const usernameCookie = document.cookie.split('; ').find(row => row.startsWith('nomCookie='));
     if (!usernameCookie) {
@@ -96,7 +95,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
     });
-    console.log("Achievement Part")
     {   
         let achievementsKeys = Object.keys(Achievements)
         let userKeys = []
@@ -114,25 +112,63 @@ document.addEventListener('DOMContentLoaded', async function() {
                 line.style.display="flex"
                 line.style.height=(100/maxNbCol)+"%"
                 for(let j=0;j<maxNbRow;j++){
-                    const selectedAchievement = Achievements[achievementsKeys[(i*maxNbCol)+j]]
+                    const selectedAchievement = Achievements[achievementsKeys[(i*(maxNbCol))+j]]
                     let row = document.createElement("div");
                     row.classList.add("achievementGrid")
                     row.style.width=(100/maxNbRow)+"%"
+                    row.style.backgroundColor="white"
+                    row.style.border = "1px solid grey"
+                    if(!selectedAchievement)continue;
+                    console.log(selectedAchievement?.title)
                     for(let current of userKeys){
                         if(current == selectedAchievement.key) {row.style.opacity=0;break;}
-                        else row.style.backgroundColor="white"
                     }
 
                     function displayAchievement(){
-                        console.log("displayAchievement: ",selectedAchievement)
-                        
-                        for(let current of userKeys){
-                            if(current == selectedAchievement.key) {document.getElementById("achievementDisplay").classList.remove("locked"); break;}
-                            else document.getElementById("achievementDisplay").classList.add("locked")
+
+                        let skinsToUnlock = []
+                        console.log(selectedAchievement)
+                        if(selectedAchievement.reward){
+                            if(selectedAchievement.reward[0]!=null)skinsToUnlock.push(selectedAchievement.reward[0])
+                            if(selectedAchievement.reward[1]!=null)skinsToUnlock.push(selectedAchievement.reward[1]) 
                         }
-                        title.textContent="Title: "+selectedAchievement.key
+                        {
+                            let found = false;
+                            for(let current of userKeys){
+                                if(current == selectedAchievement.key) {
+                                    found = true
+                                    break;
+                                }
+                            }
+                            if(found){
+                                document.getElementById("achievementDisplay").classList.remove("locked"); 
+                                if(skinsToUnlock.length==0)reward.style.visibility="hidden"
+                                else{
+                                    reward.style.visibility="visible";
+                                    reward.textContent="Rewards :"
+                                    for(let skin of skinsToUnlock){
+                                        let element = document.createElement("img")
+                                        element.setAttribute("src",skin)
+                                        element.classList.add("miniature")
+                                        reward.appendChild(element)
+                                    
+                                    }
+                                }
+
+                            }else{
+                                document.getElementById("achievementDisplay").classList.add("locked")
+                                reward.textContent="Rewards :";
+                                if(skinsToUnlock.length==0)reward.style.visibility="hidden";
+                                else {
+                                    reward.style.visibility="visible";
+                                    for(let skin in skinsToUnlock){ 
+                                        reward.textContent+=" ? ";
+                                    }
+                                }
+                            }
+                        }
+                        title.textContent="Title: "+selectedAchievement.title
                         description.textContent="description: "+selectedAchievement.value
-                        reward.textContent="reward: "+i+","+j
                     }
                     row.addEventListener("mouseenter",displayAchievement)
                     row.addEventListener("mousedown",displayAchievement)

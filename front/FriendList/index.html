@@ -6,41 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liste d'amis</title>
   <link rel="stylesheet" href="../FriendList/friendList.css">
-    <link href="header.css" rel="stylesheet">
+    <link href="../header.css" rel="stylesheet">
 </head>
 
 <body>
-  <div class="global">
+  <header>
     <div class="upperBtns">
-        <a href="../signUp">
+        <a href="signUp">
             <button id=signUp>
                 S'inscrire
             </button>
         </a>
-        <a href="../signIn">
+        <a href="signIn">
             <button id=signIn>
                 Se connecter
             </button>
         </a>
     </div>
 
-    <a href=".."><h1>CocoRidor</h1></a>
+    <a href="..">
+        <h1>CocoRidor</h1>
+    </a>
 
-    
+
     <div id=playerCard>
-        <div id=playerProfile>
-            <img src="../Main-Page/logo.png" id="playerPicture" alt="Photo de profil">
-            <div id=playerInfo>
-                <div id=playerName>
-                    Player
-                </div>
-                <div id=playerRank>
-                    Elo 1000
+        <a href="../profile">
+            <div id=playerProfile>
+                <img src="../assets/img/logo.png" id="playerPicture" alt="Photo de profil">
+                <div id=playerInfo>
+                    <div id=playerName>
+                        Player
+                    </div>
+                    <div id=playerRank>
+                        Elo 1000
+                    </div>
                 </div>
             </div>
-        </div> 
+        </a>
     </div>
-  </div>
+</header>
 
   <div class="container">
     <h1>Ma liste d'amis</h1>
@@ -66,6 +70,7 @@
       <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
       <span id="send-btn" class="material-symbols-rounded">
       </span>
+    </div>
     </div>
 
 
@@ -108,7 +113,7 @@
               chatButton.setAttribute("id", friend);
 
               const img = document.createElement("img");
-              img.setAttribute("src", "../FriendList/chat2.png");
+              img.setAttribute("src", "../assets/img/chat2.png");
               img.setAttribute("alt", "chat");
               img.style.width = "50%";
               img.style.height = "50%";
@@ -139,17 +144,19 @@
 
               const pvpButton = document.createElement("button");
               pvpButton.setAttribute("id", friend);
-              pvpButton.textContent = "Défier";
+              pvpButton.textContent = "DEFIER";
               pvpButton.onclick = function () {
                 const friendName = pvpButton.getAttribute("id");
                 window.location.href = "../Game-Page?mode=1vs1Friend&playerid=" + nameUser + "&friend=" + friendName;
               };
 
               friendElement.appendChild(nameElement);
+              
               friendElement.appendChild(chatButton);
+              friendElement.appendChild(nbMessage);
               friendElement.appendChild(pvpButton);
               friendRequest.appendChild(friendElement);
-              friendElement.appendChild(nbMessage);
+              
               adjustZoom();
             }
           })

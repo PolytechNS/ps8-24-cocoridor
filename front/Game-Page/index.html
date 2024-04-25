@@ -29,7 +29,7 @@
      <div id=playerCard>
       <a id="profile">
           <div id=playerProfile>
-              <img src="../Main-Page/logo.png" id="playerPicture" alt="Photo de profil">
+              <img src="../assets/img/logo.png" id="playerPicture" alt="Photo de profil">
               <div id=playerInfo>
                   <div id=playerName>
                       Player
@@ -55,13 +55,15 @@
         <div id="playerTurn"></div>
       </div>
       <div id="gameDiv">
-        <section id="game"></section>
-        <section id="gameCover" onclick="hideCover()"></section>
+        <section id="game">
+        </section>
+        <section id="gameCover" onclick="hideCover()">
+        </section>
       </div>
       <button class="chatbot-toggler">
         <span class="material-symbols-rounded">
           <img
-            src="../Game-Page/chat.png"
+            src="../assets/img/chat.png"
             alt="chat"
             width="100%"
             height="100%"
@@ -74,14 +76,14 @@
 
       <div class="chatbot">
         <header>
-          <h2>Chatbot</h2>
+          <h2>Chat</h2>
           <span class="close-btn material-symbols-outlined"></span>
         </header>
         <ul class="chatbox">
           <li class="chat incoming">
             <span s="material-symbols-outlined">
               <img
-                src="../Game-Page/PouletJ1.png"
+                src="../assets/img/PouletJ1.png"
                 alt="PouletJ1"
                 width="100%"
                 height="100%"
@@ -89,14 +91,10 @@
             </span>
           </li>
         </ul>
-        <div class="chat-input">
-          <textarea
-            placeholder="Enter a message..."
-            spellcheck="false"
-            required
-          ></textarea>
-          <span id="send-btn" class="material-symbols-rounded"> </span>
-        </div>
+          <div class="chat-input">
+              <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+              <span id="send-btn" class="material-symbols-rounded"></span>
+          </div>
       </div>
 
       <div id="wallsLeft">
@@ -129,6 +127,7 @@
       let waiting = document.getElementsByClassName("attente");
       var socket;
       let gameSetUp = false;
+      let previousPos = null;
       switch (mode) {
         case "local":
           socket = io("/api/Localgame");
@@ -221,6 +220,33 @@
         socket.on("moved",()=>{
             socket.emit('update');
         })
+      socket.on("placed",(coords)=> {
+          //the div that corresponds to the coords in the game section
+          let pos = (coords.X)+(8-coords.Y)*9;
+          console.log(pos);
+          let game = document.getElementById("game");
+          let tile = game.childNodes[pos].childNodes[0];
+          console.log(tile);
+          let me;
+          for(player of playerList){
+              if(player.username==user){
+                  me = player;
+              }
+          }
+          //ajoute l'image de me sur la case
+          let img = document.createElement("img");
+          img.src = me.playerSkin;
+          img.style.width = "100%";
+          img.style.height = "100%";
+          tile.appendChild(img);
+            if(previousPos){
+                let previousTile = game.childNodes[previousPos].childNodes[0];
+                previousTile.removeChild(previousTile.childNodes[0]);
+            }
+            previousPos = pos;
+
+
+      })
         socket.on("updateBoard",(board,turnNumber,nbWalls)=>{
             turnNb=turnNumber;
             res = nbWalls[0]+"";

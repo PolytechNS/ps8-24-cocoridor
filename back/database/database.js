@@ -121,18 +121,24 @@ async function getFriendRequests(username){
 }
 
 async function addFriend(username, usernameFriend) {
-    const users = await getUsers();
-    const user= await users.findOne({ username: username });
+    const user= await getUser(username);
+    const userFriend = await getUser(usernameFriend);
+
     if(!user.friends.request.includes(usernameFriend)) {
         return;
     }
+
     user.friends.request = user.friends.request.filter(request => request !== usernameFriend);
-    user.friends.list.push(usernameFriend);
-    await users.updateOne({ username: username }, { $set: { friends: user.friends } });
-    const userFriend = await users.findOne({ username: usernameFriend });
-    userFriend.friends.list.push(username);
     userFriend.friends.request = userFriend.friends.request.filter(request => request !== username);
-    await users.updateOne({ username: usernameFriend }, { $set: { friends: userFriend.friends } });
+
+    user.friends.list.push(usernameFriend);
+    userFriend.friends.list.push(username);
+
+    await updateUser(user);
+    await updateUser(userFriend);
+
+    await profile.checkStatsAchievement(user)
+    await profile.checkStatsAchievement(userFriend)
     return;
 }
 
@@ -157,7 +163,6 @@ async function addMessage(username,friend,message){
     } else {
         conv.messages.push(username + "/" + message);
     }
-    await users.updateOne({ username: username }, { $set: { convs: user.convs } });
 
     const friendUser = await users.findOne({ username: friend });
     let friendConv = friendUser.convs.all.find(conv => conv.username === username);
@@ -172,7 +177,12 @@ async function addMessage(username,friend,message){
     } else {
         friendConvN.messages.push(username + "/" + message);
     }
+    await users.updateOne({ username: username }, { $set: { convs: user.convs } });
     await users.updateOne({ username: friend }, { $set: { convs: friendUser.convs } });
+    
+    profile.addAchievementTo([profile.Achievements.SendMessage],username).then((result)=>{
+        if(!result) console.error("An error occured while adding achievement here :(")
+      })
     return;
 }
 
@@ -202,7 +212,6 @@ async function getNewConv(username,friend){
 
 async function changeSkin(username, beast, human) {
     const users = await getUsers();
-    console.log(username, beast, human)
     await users.updateOne({ username: username }, { $set: { 
         "skins.beastSkin": beast, 
         "skins.humanSkin": human 

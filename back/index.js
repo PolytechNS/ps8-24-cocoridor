@@ -160,6 +160,10 @@ io.of("/api/AIgame").on('connection', (socket) => {
         }
         let nbWalls = back.getNbWalls(playerList);
         socket.emit("launch", back.BoardFor(gameId,me), turnNb, gameId, nbWalls);
+        
+        profile.addAchievementTo([profile.Achievements.RetrieveGame],me.username).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+        })
         if(playerList[turnNb%playerList.length].getid()==bot.getid()){
             let aiBoard = back.BoardFor(gameId, bot);
             {
@@ -183,6 +187,7 @@ io.of("/api/AIgame").on('connection', (socket) => {
             await saveGame(gameState, saveId);
             let newBoard = back.BoardFor(gameId, me);
             let nbWalls = back.getNbWalls(playerList);
+            
             socket.emit("updateBoard", newBoard, turnNb,nbWalls);
         }
     })
@@ -316,13 +321,12 @@ io.of("/api/AIgame").on('connection', (socket) => {
                 continue;
             }
         }
-
-        if(me.OnTile!=null) return;
         let coords = {X:move.x,Y:move.y}
         if(me.start.find((e)=>e.X==coords.X&&e.Y==coords.Y) ==null )return;
         playerList= back.getPlayerList(gameId);
 
         back.placePlayer(gameId,myId,coords);
+        socket.emit("placed", coords);
     
         for(let player of playerList){
             if(player.OnTile==null) return;
@@ -579,13 +583,12 @@ io.of("/api/1vs1").on('connection', async (socket) => {
                 continue;
             }
         }
-        if(me.OnTile!=null) return;
         let coords = {X:move.x,Y:move.y}
         if(me.start.find((e)=>e.X==coords.X&&e.Y==coords.Y) ==null )return;
         playerList= back.getPlayerList(gameId);
 
         back.placePlayer(gameId,myId,coords);
-    
+        socket.emit("placed", coords);
         for(let player of playerList){
             if(player.OnTile==null) return;
         }
@@ -624,6 +627,9 @@ io.of("/api/1vs1").on('connection', async (socket) => {
         socket.emit("choosePos", back.setUpBoard(gameId,me),playerList,turnNb,back.getNbWalls(playerList));
     });
     socket.on('message', (message,playerName) => {
+        profile.addAchievementTo([profile.Achievements.ReactToTheGame],playerName).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+        })
         io.of("/api/1vs1").to('room' + gameId).emit("message", message,playerName);
     });
     socket.on("disconnect",()=>{
@@ -666,39 +672,36 @@ const GameType = {
         if(player.fakePlayer)continue;
         playerList.push(await db.getUser(player.username))
     }
+    console.log(winnersInstance)
     let winners = []
     for(let winner of winnersInstance) {
         if(winner.fakePlayer)continue;
-        winners.push(await db.getUser(winner))
+        winners.push(await db.getUser(winner.username))
     }
     console.log(winners);
     switch(gameType){
         case GameType.Local:
-            console.log("Local")
             for(let player of playerList) player.stats.LocalPlay = player.stats.LocalPlay+1
             break;
         case GameType.AgainstFriend:
-            console.log("AgainstFriend")
             for(let player of playerList){
                 player.stats.FriendPlay = player.stats.FriendPlay + 1
-                for(let winner of winners)if(winner.username==player.username){console.log("victory+");player.stats.FriendPlayVictory +=1; break;}
+                for(let winner of winners)if(winner.username==player.username){player.stats.FriendPlayVictory +=1; break;}
             }
             break;
         case GameType.AgainstAI:
-            console.log("AgainstAI")
             for(let player of playerList){
                 player.stats.AiPlay = player.stats.AiPlay + 1
                 for(let winner of winners){
                     if(winner)
-                        if(winner.username==player.username){console.log("victory+");player.stats.AiPlayVictory +=1; break;}
+                        if(winner.username==player.username){player.stats.AiPlayVictory +=1; break;}
                 }
             }
             break;
         case GameType.OneVsOne:
-            console.log("OneVsOne")
             for(let player of playerList){
                 player.stats.OnlinePlay = player.stats.OnlinePlay + 1
-                for(let winner of winners)if(winner.username==player.username){console.log("victory+");player.stats.OnlinePlayVictory +=1; break;}
+                for(let winner of winners)if(winner.username==player.username){player.stats.OnlinePlayVictory +=1; break;}
                 
             }
 
@@ -713,7 +716,6 @@ const GameType = {
         await db.updateUser(player)//Envois Stats
        
     }
-    console.log("ACHIEVEMENT TIME")
     for(let player of playerList) profile.checkStatsAchievement(player);
     if(saveId!=null) apiQuery.deleteGameSave(saveId)
     back.deleteGame(gameId)
@@ -781,10 +783,11 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         let roomKey = myId>=friendid?myId+friendid:friendid+myId;
         playersRooms[roomKey] = playersRooms[roomKey] || [];
         let alreadyIn = false;
-        for( let player  in playersRooms[roomKey]){
+        console.log(playersRooms[roomKey])
+        for( let player of playersRooms[roomKey]){
             if(player.id === playerid){
-                players.socket.disconnect();
-                players.socket = socket;
+                player.socket.disconnect();
+                player.socket = socket;
                 alreadyIn = true;
             }
         }
@@ -900,12 +903,12 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
                 continue;
             }
         }
-        if(me.OnTile!=null) return;
         let coords = {X:move.x,Y:move.y}
         if(me.start.find((e)=>e.X==coords.X&&e.Y==coords.Y) ==null )return;
         playerList= back.getPlayerList(gameId);
 
         back.placePlayer(gameId,myId,coords);
+        socket.emit("placed", coords);
 
         for(let player of playerList){
             if(player.OnTile==null) return;
@@ -944,7 +947,11 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         socket.emit("choosePos", back.setUpBoard(gameId,me),playerList,turnNb,back.getNbWalls(playerList));
     });
     socket.on('message', (message,playerName) => {
+        profile.addAchievementTo([profile.Achievements.ReactToTheGame],playerName).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+        })
         io.of("/api/1vs1Friend").to('room' + gameId).emit("message", message,playerName);
+        
     });
     socket.on("disconnect",()=>{
 
@@ -958,7 +965,6 @@ io.of("/api/1vs1Friend").on('connection', async (socket) => {
         friendMatch[gameId].filter((e)=>e.getid() != myId )
         if(friendMatch[gameId].length==0){
             if (winners != null && winners.length!==0) {
-                console.log(winners);
                 endGameUpdate(GameType.AgainstFriend, saveId, gameId, playerList, winners)
             }
         }

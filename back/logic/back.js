@@ -1,5 +1,6 @@
 const apiQuery = require("../queryManagers/api")
 const profile = require("./profile")
+const db = require("../database/database")
 class GameParams{
   /**
    * 
@@ -881,6 +882,15 @@ class Border {
       }
       this.X = path.node.X;
       this.Y = path.node.Y;
+      {
+        let departure = player.getTile().getCoords()
+
+        if(Math.abs(departure.X-this.X)+Math.abs(departure.Y-this.Y)>this.game.gameParams.travelDist){
+          profile.addAchievementTo([profile.Achievements.JumpOverPlayer],player.username).then((result)=>{
+            if(!result) console.error("An error occured while adding achievement here :(")
+          })
+        }
+      }
   
     }
     
@@ -966,6 +976,9 @@ class Border {
     }
     for(let border of borders) if(border.wallBy!=null) return null;
     if(game.playersCanReachEnd(borders)) return new Wall(game.id, player,borders);
+    profile.addAchievementTo([profile.Achievements.BerlinWall],player.username).then((result)=>{
+      if(!result) console.error("An error occured while adding achievement here :(")
+    })
     return null
   }
 

@@ -2,7 +2,6 @@
 
 
 
-
 let boardLength = 9;
 let boardHeight = 9;
 let playerList;
@@ -195,7 +194,7 @@ class BorderFront{
     this.element = document.createElement("div");
     let tile;
     let nextTile;
-    switch ((this.lng ? 1 : 0) + (this.lat ? 2 : 0)) {
+     switch ((this.lng ? 1 : 0) + (this.lat ? 2 : 0)) {
       case 1: // vertical border
         this.element.classList.add("verticalBorder");
         this.element.addEventListener("click", () => this.onClick(true));
@@ -354,8 +353,14 @@ function DisplayBoard(board,positions=null){
   let playerTurn = document.getElementById("playerTurn");
   playerTurn.innerHTML="";
   let img = document.createElement("img");
-  img.style.width = "100%"; 
-  img.style.height = "100%";
+  if (window.innerWidth <= 600 || window.innerHeight <= 600) {
+    img.style.width = "auto"; 
+    img.style.height = "80%"; 
+  } else {
+    img.style.width = "100%";
+    img.style.height = "100%";
+  }
+
 
   img.src = playerList[turnNb%playerList.length].playerSkin
   playerTurn.appendChild(img)
@@ -363,7 +368,13 @@ function DisplayBoard(board,positions=null){
   else{playerTurn.appendChild(document.createTextNode("Au tour de "+playerList[turnNb%playerList.length].username+" de jouer"))};
   if(mode === "local") {
     let gC = document.getElementById("gameCover");
-    gC.style.cssText = "display : block; font-size: 50px;  text-align: center; margin:auto; padding-top: 200px;padding-bottom: 400px;";
+    if(window.innerWidth <= 600) {
+      gC.style.cssText = "display : inline-block; font-size: 30px;";
+    }else if(window.innerHeight <= 600) {
+      gC.style.cssText = "display : inline-block; font-size: 30px;";
+    }else{
+        gC.style.cssText = "display : block; font-size: 50px;  text-align: center; margin:auto; padding-top: 200px;padding-bottom: 400px;";
+    }
     gC.innerHTML = "Cliquez pour continuer ...";
   }
 }
@@ -391,7 +402,7 @@ const createChatLi = (message, className) => {
   let chatContent = className === "outgoing" ? 
   `<span s="material-symbols-outlined">
       <img
-          src="../Game-Page/FermierJ2.png"
+          src="../assets/img/FermierJ2.png"
           alt="FermierJ2"
           width="100%"
           height="100%"
@@ -399,7 +410,7 @@ const createChatLi = (message, className) => {
   </span><p></p>` : 
   `<span s="material-symbols-outlined">
       <img
-          src="../Game-Page/PouletJ1.png"
+          src="../assets/img/PouletJ1.png"
           alt="PouletJ1"
           width="100%"
           height="100%"
