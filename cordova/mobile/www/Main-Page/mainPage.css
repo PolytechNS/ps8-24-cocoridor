@@ -1,0 +1,97 @@
+/* Main Page Styling */
+html, body {
+    height: 100%;
+    background: linear-gradient(to bottom right, #f7e9b3, #f5a56f, #fff2be); 
+    margin: 0;
+}
+
+
+.shell{
+    width: 125px;
+    height: auto;
+    object-fit: cover;
+    z-index: 1; 
+    margin-top: -3px;
+}
+
+
+.buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+    gap:10px;
+    /* margin-bottom:70px; */
+}
+
+
+#GamePlaySelection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    gap:40px;
+    padding-top: 60px; /* Ajout de marge pour compenser l'en-tête fixe */
+
+}
+
+
+.gameModeButton{
+    margin: 0 10px;
+}
+
+.btn{
+    height: 48px;
+    width: 225px;
+    font-size: 20px;
+    border: none;  
+    background-color: #D9D9D9;
+    /* border-radius: 40px; */
+    font-family: 'Arial', sans-serif;
+    cursor: pointer ;
+    transition: 0.2s ease-in-out;
+
+}
+
+.btn:hover {
+    background-size: cover;
+    transform: scale(1.05);
+    box-shadow:  0 0 10px #00000028;
+}
+
+.iconContainer{
+    width: 225px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*telephone*/
+@media screen and (max-width: 600px) {
+
+    /*cache les images avec la classe "icon*/
+    .icon{
+        display: none;
+    }
+
+
+}
+
+/*telephone*/
+@media screen and (max-height: 600px) {
+
+    /*cache les images avec la classe "icon*/
+    .icon{
+        display: none;
+    }
+
+    #GamePlaySelection{
+        gap:20px;
+        padding-top:20px;
+    }
+
+
+}
+

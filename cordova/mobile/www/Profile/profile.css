@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+}
+
+h2 {
+    font-size: 60px;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+
+main {
+    margin: 20px auto;
+}
+
+.profile-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.profile-picture {
+    margin-right: 20px;
+}
+
+.profile-picture img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #333;
+}
+
+.profile-info h3 {
+    margin-top: 0;
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+.profile-info p:first-child {
+    font-weight: bold;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 60px;
+    color: red;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav-arrows {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.arrow-container {
+    display: flex;
+    align-items: center;
+}
+
+.left-arrow,
+.right-arrow {
+    max-width: 12vw;
+    max-height: 12vh;
+}
+
+.images{
+    max-width: 20vw;
+    max-height: 20vw;
+}
+
+.select{
+    display: inline-flex;
+    width: 50%;
+    min-height: 11vh;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#confirm{
+    min-height: 7vh;
+    min-width: 7vw;
+    padding: 1vw 5vw 1vw 5vw;
+}
+.Achievements{
+    margin-top: 5vh;
+    position: relative;
+    display: inline-block;
+    align-self: center;
+    justify-content: center;
+    
+}
+
+#achievementGrid { 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 1px solid black;
+    position: absolute;
+}
+
+.Achievements img{
+    width: min(75vh,90vw) ;
+}
+
+#achievementDisplay{
+    display: flex;
+    background-color: grey;
+    max-height: max(15vw,15vh);
+}
+
+.locked img{
+    filter:grayscale(1)
+}
+
+.miniature{
+    vertical-align: middle;
+    max-width: 30px;
+    max-height: 30px;
+}
