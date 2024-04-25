@@ -7,6 +7,7 @@ const client = new MongoClient(MONGO_URL);
 const { ObjectId } = require('mongodb');
 const { GameState } = require("../logic/back.js");
 const profile = require('../logic/profile.js');
+const { addAchievement } = require('../queryManagers/api.js');
 
 async function getMongoDatabase() {
     if (!!client && !!client.topology && client.topology.isConnected()) {
@@ -120,18 +121,24 @@ async function getFriendRequests(username){
 }
 
 async function addFriend(username, usernameFriend) {
-    const users = await getUsers();
-    const user= await users.findOne({ username: username });
+    const user= await getUser(username);
+    const userFriend = await getUser(usernameFriend);
+
     if(!user.friends.request.includes(usernameFriend)) {
         return;
     }
+
     user.friends.request = user.friends.request.filter(request => request !== usernameFriend);
-    user.friends.list.push(usernameFriend);
-    await users.updateOne({ username: username }, { $set: { friends: user.friends } });
-    const userFriend = await users.findOne({ username: usernameFriend });
-    userFriend.friends.list.push(username);
     userFriend.friends.request = userFriend.friends.request.filter(request => request !== username);
-    await users.updateOne({ username: usernameFriend }, { $set: { friends: userFriend.friends } });
+
+    user.friends.list.push(usernameFriend);
+    userFriend.friends.list.push(username);
+
+    await updateUser(user);
+    await updateUser(userFriend);
+
+    await profile.checkStatsAchievement(user)
+    await profile.checkStatsAchievement(userFriend)
     return;
 }
 
@@ -201,7 +208,6 @@ async function getNewConv(username,friend){
 
 async function changeSkin(username, beast, human) {
     const users = await getUsers();
-    console.log(username, beast, human)
     await users.updateOne({ username: username }, { $set: { 
         "skins.beastSkin": beast, 
         "skins.humanSkin": human 

@@ -186,12 +186,6 @@ exports.updateBoard = async function updateBoard(gamestate) {
         }
     }
     let ennemyPos = findEnnemy(gamestate, currentPosition);
-    if(ennemyPos !== null) {
-        console.log("findEnnemy : ", ennemyPos.x + " " + ennemyPos.y);
-    }
-    if(EnnemyPos !== null) {
-        console.log("EnnemyPos : ", EnnemyPos.x + " " + EnnemyPos.y);
-    }
     PreviousGameState = gamestate;
     return Promise.resolve(true);
 };

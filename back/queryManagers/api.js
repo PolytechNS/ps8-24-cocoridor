@@ -215,7 +215,6 @@ async function createGame(gameState, response = null) {
     }
     let playerList = gameState.getPlayerList();
     for(let i=0;i<playerList.length;i++){
-        console.log(playerList[i].username+" "+playerList[i].difficulty);
         if(playerList[i].username === undefined || playerList[i].difficulty !== undefined) continue;
         await db.addGame(playerList[i].username,NewGame._id);
     }
@@ -560,22 +559,24 @@ async function getUser(userId=null){
 /**
  * 
  * @param {String} userId 
- * @param {Achievements} achievement 
+ * @param {{key:String,title:String,value:String,reward:String[][]}[]} achievements 
  * @returns {Promise<Boolean>}
  */
-async function addAchievement(userId,achievement){
-    if(Achievements[achievement.key]==null) return false;
-    let user = await db.getUser(userId)
-    if(!user) return false;
-    for(achieved of user.achievements)if(achieved.key == achievement.key) return false;
+async function addAchievement(userId,achievements){
+  let user = await db.getUser(userId)
+  if(!user) {console.error(userId,"dones't exist"); return false;}
+
+  for(let achievement of achievements){
+    if(Achievements[achievement.key]==null) {console.info("achievement ",achievement.title," don't exist")}
+    for(achieved of user.achievements)if(achieved.key == achievement.key) {console.log("user already have ",achievement.title);continue;}
     if(achievement.reward){
       if(achievement.reward[0]!=null)user.skins.beastSkins.push(achievement.reward[0]);
       if(achievement.reward[1]!=null)user.skins.humanSkins.push(achievement.reward[1]);
     }
     user.achievements.push(achievement);
-    console.log("new User:",user)
-    db.updateUser(user);
-    return true;
+  }
+  db.updateUser(user);
+  return true;
 }
 
 async function deleteGameSave(saveId){
