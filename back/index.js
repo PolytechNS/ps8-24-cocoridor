@@ -161,7 +161,6 @@ io.of("/api/AIgame").on('connection', (socket) => {
         let nbWalls = back.getNbWalls(playerList);
         socket.emit("launch", back.BoardFor(gameId,me), turnNb, gameId, nbWalls);
         
-        console.log("OVER HERE", profile.Achievements.RetrieveGame,me.username )
         profile.addAchievementTo([profile.Achievements.RetrieveGame],me.username).then((result)=>{
             if(!result) console.error("An error occured while adding achievement here :(")
         })
